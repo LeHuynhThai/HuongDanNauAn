@@ -58,16 +58,48 @@
 		8442D8FC2EB5AE74004ABE47 /* HuongDanNauAn */ = {
 			isa = PBXGroup;
 			children = (
-				8442D8FD2EB5AE74004ABE47 /* AppDelegate.swift */,
-				8442D8FF2EB5AE74004ABE47 /* SceneDelegate.swift */,
-				8442D9012EB5AE74004ABE47 /* ViewController.swift */,
+				8442D9172EB5B90C004ABE47 /* View */,
+				8442D9162EB5B904004ABE47 /* Model */,
+				8442D9152EB5B8F3004ABE47 /* Controller */,
+				8442D9142EB5B878004ABE47 /* System Files */,
 				8442D9032EB5AE74004ABE47 /* Main.storyboard */,
-				8442D9092EB5AE77004ABE47 /* Assets.xcassets */,
-				8442D90B2EB5AE77004ABE47 /* LaunchScreen.storyboard */,
-				8442D90E2EB5AE77004ABE47 /* Info.plist */,
-				8442D9062EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld */,
 			);
 			path = HuongDanNauAn;
+			sourceTree = "<group>";
+		};
+		8442D9142EB5B878004ABE47 /* System Files */ = {
+			isa = PBXGroup;
+			children = (
+				8442D9062EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld */,
+				8442D90E2EB5AE77004ABE47 /* Info.plist */,
+				8442D90B2EB5AE77004ABE47 /* LaunchScreen.storyboard */,
+				8442D9092EB5AE77004ABE47 /* Assets.xcassets */,
+				8442D8FF2EB5AE74004ABE47 /* SceneDelegate.swift */,
+				8442D8FD2EB5AE74004ABE47 /* AppDelegate.swift */,
+			);
+			name = "System Files";
+			sourceTree = "<group>";
+		};
+		8442D9152EB5B8F3004ABE47 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8442D9012EB5AE74004ABE47 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8442D9162EB5B904004ABE47 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		8442D9172EB5B90C004ABE47 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
