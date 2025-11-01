@@ -14,7 +14,7 @@
 		8442D9082EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8442D9062EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld */; };
 		8442D90A2EB5AE77004ABE47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8442D9092EB5AE77004ABE47 /* Assets.xcassets */; };
 		8442D90D2EB5AE77004ABE47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8442D90B2EB5AE77004ABE47 /* LaunchScreen.storyboard */; };
-		8442D91D2EB5BFF5004ABE47 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442D91C2EB5BFF5004ABE47 /* test.swift */; };
+		8442D91F2EB5C069004ABE47 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442D91E2EB5C069004ABE47 /* test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 		8442D9092EB5AE77004ABE47 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8442D90C2EB5AE77004ABE47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8442D90E2EB5AE77004ABE47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8442D91C2EB5BFF5004ABE47 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		8442D91E2EB5C069004ABE47 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +80,7 @@
 		8442D9162EB5B904004ABE47 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				8442D91C2EB5BFF5004ABE47 /* test.swift */,
+				8442D91E2EB5C069004ABE47 /* test.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -179,7 +179,7 @@
 				8442D9022EB5AE74004ABE47 /* ViewController.swift in Sources */,
 				8442D9082EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld in Sources */,
 				8442D8FE2EB5AE74004ABE47 /* AppDelegate.swift in Sources */,
-				8442D91D2EB5BFF5004ABE47 /* test.swift in Sources */,
+				8442D91F2EB5C069004ABE47 /* test.swift in Sources */,
 				8442D9002EB5AE74004ABE47 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
