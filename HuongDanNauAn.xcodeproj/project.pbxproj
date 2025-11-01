@@ -15,6 +15,7 @@
 		8442D90A2EB5AE77004ABE47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8442D9092EB5AE77004ABE47 /* Assets.xcassets */; };
 		8442D90D2EB5AE77004ABE47 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8442D90B2EB5AE77004ABE47 /* LaunchScreen.storyboard */; };
 		8442D91F2EB5C069004ABE47 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442D91E2EB5C069004ABE47 /* test.swift */; };
+		8442D9222EB5C0B4004ABE47 /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442D9212EB5C0B4004ABE47 /* test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		8442D90C2EB5AE77004ABE47 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8442D90E2EB5AE77004ABE47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8442D91E2EB5C069004ABE47 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
+		8442D9212EB5C0B4004ABE47 /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		8442D8FC2EB5AE74004ABE47 /* HuongDanNauAn */ = {
 			isa = PBXGroup;
 			children = (
+				8442D9202EB5C09E004ABE47 /* test */,
 				8442D9192EB5BC91004ABE47 /* System Files */,
 				8442D9172EB5B90C004ABE47 /* View */,
 				8442D9162EB5B904004ABE47 /* Model */,
@@ -103,6 +106,14 @@
 				8442D8FD2EB5AE74004ABE47 /* AppDelegate.swift */,
 			);
 			name = "System Files";
+			sourceTree = "<group>";
+		};
+		8442D9202EB5C09E004ABE47 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				8442D9212EB5C0B4004ABE47 /* test.swift */,
+			);
+			path = test;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8442D9022EB5AE74004ABE47 /* ViewController.swift in Sources */,
+				8442D9222EB5C0B4004ABE47 /* test.swift in Sources */,
 				8442D9082EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld in Sources */,
 				8442D8FE2EB5AE74004ABE47 /* AppDelegate.swift in Sources */,
 				8442D91F2EB5C069004ABE47 /* test.swift in Sources */,
