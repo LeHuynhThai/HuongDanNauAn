@@ -59,7 +59,6 @@
 			isa = PBXGroup;
 			children = (
 				8442D9192EB5BC91004ABE47 /* System Files */,
-				8442D9172EB5B90C004ABE47 /* View */,
 				8442D9162EB5B904004ABE47 /* Model */,
 				8442D9152EB5B8F3004ABE47 /* Controller */,
 				8442D9032EB5AE74004ABE47 /* Main.storyboard */,
@@ -80,13 +79,6 @@
 			children = (
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		8442D9172EB5B90C004ABE47 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		8442D9192EB5BC91004ABE47 /* System Files */ = {
