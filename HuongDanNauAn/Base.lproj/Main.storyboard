@@ -4,59 +4,63 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="zde-Bh-ao3">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RTh-bV-OYo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <viewController id="tpB-Ed-lO8" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="oh2-9G-P0M">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nWl-n1-Lel">
-                                <rect key="frame" x="159" y="257" width="75" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" name="AccentColor"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button">
-                                    <color key="baseForegroundColor" name="AccentColor"/>
-                                </buttonConfiguration>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="Eyt-qe-z4B"/>
-                        <color key="backgroundColor" systemColor="systemPinkColor"/>
-                        <accessibility key="accessibilityConfiguration">
-                            <accessibilityTraits key="traits" image="YES"/>
-                        </accessibility>
-                    </view>
-                    <navigationItem key="navigationItem" id="UpB-XW-wlv"/>
-                </viewController>
-            </objects>
-            <point key="canvasLocation" x="-1889" y="1445"/>
-        </scene>
         <!--Home-->
         <scene sceneID="mZt-el-HRw">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="S3v-ym-BC4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController id="pgR-3f-Czb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="Nro-cK-Uef"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DUa-6h-off">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <navigationBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </navigationBarAppearance>
                     </navigationBar>
                     <connections>
-                        <segue destination="tpB-Ed-lO8" kind="relationship" relationship="rootViewController" id="F91-zs-Yrg"/>
+                        <segue destination="ENY-sC-DMA" kind="relationship" relationship="rootViewController" id="C8R-bu-Z6r"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="S3v-ym-BC4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1888" y="674"/>
+        </scene>
+        <!--Home View Controller-->
+        <scene sceneID="UqA-9f-gUo">
+            <objects>
+                <viewController id="ENY-sC-DMA" customClass="HomeViewController" customModule="HuongDanNauAn" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="W2M-u3-eA7">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" fixedFrame="YES" text="" placeholder="Find a recipe" translatesAutoresizingMaskIntoConstraints="NO" id="O9T-oU-CFl">
+                                <rect key="frame" x="16" y="111" width="361" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="ENY-sC-DMA" id="u96-gh-fvz"/>
+                                </connections>
+                            </searchBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Featured Recipes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mX0-RP-aAc">
+                                <rect key="frame" x="16" y="181" width="164" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="v6r-aL-YYc"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="qcm-UK-bKU"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="twH-th-Aed" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1889.3129770992366" y="1401.4084507042255"/>
         </scene>
         <!--My Recipes-->
         <scene sceneID="hln-9y-yqb">
@@ -120,30 +124,14 @@
             </objects>
             <point key="canvasLocation" x="-356" y="-181"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="zPQ-Xh-g9m">
-            <objects>
-                <navigationController id="YlT-pK-xLy" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Klt-r2-sdS">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9eA-Do-MPS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="567" y="-182"/>
-        </scene>
     </scenes>
     <resources>
         <image name="carrot" catalog="system" width="128" height="122"/>
         <image name="frying.pan" catalog="system" width="128" height="81"/>
         <image name="house.fill" catalog="system" width="128" height="104"/>
         <image name="person" catalog="system" width="128" height="121"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>
