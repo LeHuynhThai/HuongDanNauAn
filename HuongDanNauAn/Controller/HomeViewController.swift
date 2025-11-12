@@ -1,11 +1,24 @@
 import UIKit
 
 class HomeViewController: UIViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        print("🚀🚀🚀 HOME VIEW CONTROLLER LOADED 🚀🚀🚀")
+            print("Self: \(self)")
+        print("=== VIEW DID LOAD ===")
+                print("Collection View: \(CollectionView != nil ? "Connected" : "NOT Connected")")
+                print("Search Bar: \(searchBar != nil ? "Connected" : "NOT Connected")")
+        CollectionView.delegate = self
+        CollectionView.delegate = self
+        CollectionView.collectionViewLayout = UICollectionViewFlowLayout()
     }
+    
+    @IBOutlet weak var CollectionView: UICollectionView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    var images : [String] = ["1","mon 1","2", "mon 2","3", "mon 3","4", "mon 4","5", "mon 5","6", "mon 6","7", "mon 7"]
+    var name : [String] = ["1","mon 1","2", "mon 2","3", "mon 3","4", "mon 4","5", "mon 5","6", "mon 6","7", "mon 7"]
     
     func setupNavigationBar() {
         // StackView
@@ -55,5 +68,22 @@ class HomeViewController: UIViewController {
         
         let profileBarButton = UIBarButtonItem(customView: profileButton)
         navigationItem.rightBarButtonItem = profileBarButton
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return name.count
+    }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecipeCell
+        cell.RecipeName.text = name[indexPath.row]
+        cell.RecipeImageView.image = UIImage(named: images[indexPath.row])
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = (collectionView.frame.size.width-10)/2
+        return CGSize(width: size, height: size)
     }
 }
