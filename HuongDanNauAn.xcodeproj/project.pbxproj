@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8442D9082EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8442D9062EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld */; };
+		8442D9082EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8442D9062EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld */	8442D90A2EB5AE77004ABE47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8442D9092EB5AE77004ABE47 /* A
+		8452C4E92EC3A15500AB0D55 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8452C4E82EC3A15500AB0D55 /* RecipeCell.swift */; };
+		8476B1602EBEE23800FD4811 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B15F2EBEE23800FD4811 /* HomeViewController.swift */; }
 		CE5F02942EC32F4C00EF168B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5F02932EC32F4C00EF168B /* User.swift */; };
 /* End PBXBuildFile section */
 
@@ -15,6 +17,8 @@
 		8442D8FA2EB5AE74004ABE47 /* HuongDanNauAn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HuongDanNauAn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8442D9072EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HuongDanNauAn.xcdatamodel; sourceTree = "<group>"; };
 		8442D90E2EB5AE77004ABE47 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8452C4E82EC3A15500AB0D55 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
+		8476B15F2EBEE23800FD4811 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		CE5F02932EC32F4C00EF168B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,12 +60,16 @@
 		8442D8FC2EB5AE74004ABE47 /* HuongDanNauAn */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
+				8452C4E12EC32E8100AB0D55 /* Components */,
+=======
 				CE5F028D2EC32DD500EF168B /* App */,
 				CE5F02882EC32D1200EF168B /* Views */,
 				CE5F028E2EC32E9000EF168B /* ViewModels */,
 				8442D9162EB5B904004ABE47 /* Models */,
 				CE5F028F2EC32EA800EF168B /* Services */,
 				CE5F02872EC3277B00EF168B /* Resources */,
+>>>>>>> main
 				8442D9192EB5BC91004ABE47 /* System Files */,
 			);
 			path = HuongDanNauAn;
@@ -82,6 +90,14 @@
 				8442D9062EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld */,
 			);
 			name = "System Files";
+			sourceTree = "<group>";
+		};
+		8452C4E12EC32E8100AB0D55 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				8452C4E82EC3A15500AB0D55 /* RecipeCell.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,6 +175,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8452C4E92EC3A15500AB0D55 /* RecipeCell.swift in Sources */,
 				8442D9082EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld in Sources */,
 				CE5F02942EC32F4C00EF168B /* User.swift in Sources */,
 			);
