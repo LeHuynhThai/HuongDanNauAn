@@ -27,6 +27,8 @@ class HomeViewController: UIViewController {
         leftStackView.spacing = 8
         leftStackView.alignment = .center
         
+        //uqweuh
+        //iqwoeuqoiweu
         // Logo
         let logoImageView = UIImageView(image: UIImage(named: "chef"))
         logoImageView.contentMode = .scaleAspectFit
