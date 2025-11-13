@@ -4,11 +4,6 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
-        print("🚀🚀🚀 HOME VIEW CONTROLLER LOADED 🚀🚀🚀")
-            print("Self: \(self)")
-        print("=== VIEW DID LOAD ===")
-                print("Collection View: \(CollectionView != nil ? "Connected" : "NOT Connected")")
-                print("Search Bar: \(searchBar != nil ? "Connected" : "NOT Connected")")
         CollectionView.delegate = self
         CollectionView.delegate = self
         CollectionView.collectionViewLayout = UICollectionViewFlowLayout()
