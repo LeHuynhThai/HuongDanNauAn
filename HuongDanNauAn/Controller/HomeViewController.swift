@@ -17,8 +17,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var CollectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var images : [String] = ["1","mon 1","2", "mon 2","3", "mon 3","4", "mon 4","5", "mon 5","6", "mon 6","7", "mon 7"]
-    var name : [String] = ["1","mon 1","2", "mon 2","3", "mon 3","4", "mon 4","5", "mon 5","6", "mon 6","7", "mon 7"]
+    var images : [String] = ["1","2","3","4","5","6","7"]
+    var name : [String] = ["mon 1", "mon 2", "mon 3","mon 4", "mon 5", "mon 6", "mon 7"]
     
     func setupNavigationBar() {
         // StackView
