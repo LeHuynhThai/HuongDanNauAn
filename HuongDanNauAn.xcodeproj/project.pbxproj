@@ -16,6 +16,10 @@
 		8452C4E92EC3A15500AB0D55 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8452C4E82EC3A15500AB0D55 /* RecipeCell.swift */; };
 		845BEE1E2EC5A87800107342 /* SearchWithIngredients.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845BEE1D2EC5A87800107342 /* SearchWithIngredients.swift */; };
 		8476B1602EBEE23800FD4811 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B15F2EBEE23800FD4811 /* HomeViewController.swift */; };
+		84A0AA122EC9000000000002 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84A0AA112EC9000000000001 /* Login.storyboard */; };
+		84A0AA152EC9000000000005 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A0AA142EC9000000000004 /* LoginController.swift */; };
+		84A0AA172EC9000000000007 /* SinupViewContronller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A0AA162EC9000000000006 /* SinupViewContronller.swift */; };
+ 		84A0AA1B2EC9000000000009 /* LoginApp Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84A0AA1A2EC9000000000008 /* LoginApp Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,10 @@
 		8452C4E82EC3A15500AB0D55 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		845BEE1D2EC5A87800107342 /* SearchWithIngredients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithIngredients.swift; sourceTree = "<group>"; };
 		8476B15F2EBEE23800FD4811 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		84A0AA112EC9000000000001 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Login.storyboard; path = Base.lproj/Login.storyboard; sourceTree = "<group>"; };
+		84A0AA142EC9000000000004 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = LoginApp/LoginController.swift; sourceTree = SOURCE_ROOT; };
+		84A0AA162EC9000000000006 /* SinupViewContronller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SinupViewContronller.swift; path = LoginApp/SinupViewContronller.swift; sourceTree = SOURCE_ROOT; };
+ 		84A0AA1A2EC9000000000008 /* LoginApp Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "LoginApp Assets.xcassets"; path = LoginApp/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +75,8 @@
 				8442D9162EB5B904004ABE47 /* Model */,
 				8442D9152EB5B8F3004ABE47 /* Controller */,
 				8442D9032EB5AE74004ABE47 /* Main.storyboard */,
+				84A0AA112EC9000000000001 /* Login.storyboard */,
+ 				84A0AA1A2EC9000000000008 /* LoginApp Assets.xcassets */,
 			);
 			path = HuongDanNauAn;
 			sourceTree = "<group>";
@@ -76,6 +86,8 @@
 			children = (
 				8476B15F2EBEE23800FD4811 /* HomeViewController.swift */,
 				845BEE1D2EC5A87800107342 /* SearchWithIngredients.swift */,
+				84A0AA142EC9000000000004 /* LoginController.swift */,
+				84A0AA162EC9000000000006 /* SinupViewContronller.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -117,7 +129,7 @@
 			buildPhases = (
 				8442D8F62EB5AE74004ABE47 /* Sources */,
 				8442D8F72EB5AE74004ABE47 /* Frameworks */,
-				8442D8F82EB5AE74004ABE47 /* Resources */,
+				8442D8F82EB5AE77004ABE47 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -162,13 +174,15 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8442D8F82EB5AE74004ABE47 /* Resources */ = {
+		8442D8F82EB5AE77004ABE47 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				8442D90D2EB5AE77004ABE47 /* LaunchScreen.storyboard in Resources */,
 				8442D90A2EB5AE77004ABE47 /* Assets.xcassets in Resources */,
 				8442D9052EB5AE74004ABE47 /* Main.storyboard in Resources */,
+				84A0AA122EC9000000000002 /* Login.storyboard in Resources */,
+ 				84A0AA1B2EC9000000000009 /* LoginApp Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +199,8 @@
 				8442D9002EB5AE74004ABE47 /* SceneDelegate.swift in Sources */,
 				845BEE1E2EC5A87800107342 /* SearchWithIngredients.swift in Sources */,
 				8476B1602EBEE23800FD4811 /* HomeViewController.swift in Sources */,
+				84A0AA152EC9000000000005 /* LoginController.swift in Sources */,
+				84A0AA172EC9000000000007 /* SinupViewContronller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

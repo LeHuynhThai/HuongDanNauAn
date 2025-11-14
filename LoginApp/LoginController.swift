@@ -84,10 +84,19 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
 
     func goToMainTabBar() {
-        if let tabBarVC = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") {
-            tabBarVC.modalPresentationStyle = .fullScreen
-            present(tabBarVC, animated: true)
+        UserDefaults.standard.set(true, forKey: "isLoggedIn")
+        let main = UIStoryboard(name: "Main", bundle: nil)
+        guard let root = main.instantiateInitialViewController() else { return }
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let sceneDelegate = windowScene.delegate as? SceneDelegate,
+           let window = sceneDelegate.window {
+            window.rootViewController = root
+            window.makeKeyAndVisible()
+            let options: UIView.AnimationOptions = .transitionCrossDissolve
+            UIView.transition(with: window, duration: 0.25, options: options, animations: nil, completion: nil)
+        } else {
+            root.modalPresentationStyle = .fullScreen
+            present(root, animated: true)
         }
     }
 }
-
