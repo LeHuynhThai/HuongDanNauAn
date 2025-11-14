@@ -14,9 +14,6 @@
 		CE17371D2EBD956900073510 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE17371B2EBD956900073510 /* Main.storyboard */; };
 		CE17371F2EBD956C00073510 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE17371E2EBD956C00073510 /* Assets.xcassets */; };
 		CE1737222EBD956C00073510 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1737202EBD956C00073510 /* LaunchScreen.storyboard */; };
-		CE17372D2EBD956C00073510 /* LoginAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE17372C2EBD956C00073510 /* LoginAppTests.swift */; };
-		CE1737372EBD956C00073510 /* LoginAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1737362EBD956C00073510 /* LoginAppUITests.swift */; };
-		CE1737392EBD956C00073510 /* LoginAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1737382EBD956C00073510 /* LoginAppUITestsLaunchTests.swift */; };
 		FEC7AC112EC4CF8500952762 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC7AC102EC4CF8500952762 /* MainTabBarController.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,10 +45,7 @@
 		CE1737212EBD956C00073510 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE1737232EBD956C00073510 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CE1737282EBD956C00073510 /* LoginAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE17372C2EBD956C00073510 /* LoginAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAppTests.swift; sourceTree = "<group>"; };
 		CE1737322EBD956C00073510 /* LoginAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE1737362EBD956C00073510 /* LoginAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAppUITests.swift; sourceTree = "<group>"; };
-		CE1737382EBD956C00073510 /* LoginAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		FEC7AC102EC4CF8500952762 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,8 +78,6 @@
 			isa = PBXGroup;
 			children = (
 				CE1737142EBD956900073510 /* LoginApp */,
-				CE17372B2EBD956C00073510 /* LoginAppTests */,
-				CE1737352EBD956C00073510 /* LoginAppUITests */,
 				CE1737132EBD956900073510 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -114,23 +106,6 @@
 				FEC7AC102EC4CF8500952762 /* MainTabBarController.swift */,
 			);
 			path = LoginApp;
-			sourceTree = "<group>";
-		};
-		CE17372B2EBD956C00073510 /* LoginAppTests */ = {
-			isa = PBXGroup;
-			children = (
-				CE17372C2EBD956C00073510 /* LoginAppTests.swift */,
-			);
-			path = LoginAppTests;
-			sourceTree = "<group>";
-		};
-		CE1737352EBD956C00073510 /* LoginAppUITests */ = {
-			isa = PBXGroup;
-			children = (
-				CE1737362EBD956C00073510 /* LoginAppUITests.swift */,
-				CE1737382EBD956C00073510 /* LoginAppUITestsLaunchTests.swift */,
-			);
-			path = LoginAppUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,7 +251,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE17372D2EBD956C00073510 /* LoginAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,8 +258,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE1737392EBD956C00073510 /* LoginAppUITestsLaunchTests.swift in Sources */,
-				CE1737372EBD956C00073510 /* LoginAppUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
