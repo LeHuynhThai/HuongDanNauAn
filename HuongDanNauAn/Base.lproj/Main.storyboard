@@ -10,11 +10,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home-->
+        <!--Trang chủ-->
         <scene sceneID="mZt-el-HRw">
             <objects>
                 <navigationController id="pgR-3f-Czb" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="house.fill" catalog="system" id="Nro-cK-Uef"/>
+                    <tabBarItem key="tabBarItem" title="Trang chủ" image="house.fill" catalog="system" id="Nro-cK-Uef"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DUa-6h-off">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -38,7 +38,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Find a recipe" translatesAutoresizingMaskIntoConstraints="NO" id="O9T-oU-CFl">
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Tìm công thức" translatesAutoresizingMaskIntoConstraints="NO" id="O9T-oU-CFl">
                                 <rect key="frame" x="16" y="123" width="361" height="56"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -259,7 +259,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="SGg-gl-kSw">
+                            <searchBar contentMode="redraw" placeholder="Tìm công thức" translatesAutoresizingMaskIntoConstraints="NO" id="SGg-gl-kSw">
                                 <rect key="frame" x="16" y="135" width="361" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -357,11 +357,11 @@
             </objects>
             <point key="canvasLocation" x="-31.297709923664122" y="1400"/>
         </scene>
-        <!--My Recipes-->
+        <!--Công thức-->
         <scene sceneID="hln-9y-yqb">
             <objects>
                 <navigationController id="T6v-c0-iUR" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Recipes" image="frying.pan" catalog="system" id="Ust-JP-I3F"/>
+                    <tabBarItem key="tabBarItem" title="Công thức" image="frying.pan" catalog="system" id="Ust-JP-I3F"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="TFD-pE-gZ9">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -371,11 +371,11 @@
             </objects>
             <point key="canvasLocation" x="-879" y="674"/>
         </scene>
-        <!--Ingredients-->
+        <!--Nguyên liệu-->
         <scene sceneID="aO0-qO-dQe">
             <objects>
                 <navigationController id="At1-iS-szm" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Ingredients" image="carrot" catalog="system" id="NMd-ZC-pab"/>
+                    <tabBarItem key="tabBarItem" title="Nguyên liệu" image="carrot" catalog="system" id="NMd-ZC-pab"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WbX-8x-hJU">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -385,11 +385,11 @@
             </objects>
             <point key="canvasLocation" x="112" y="674"/>
         </scene>
-        <!--Profile-->
+        <!--Tài khoản-->
         <scene sceneID="aTV-Qh-Rxp">
             <objects>
                 <navigationController id="piK-lj-FCt" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" image="person" catalog="system" id="InC-Dr-wZ7"/>
+                    <tabBarItem key="tabBarItem" title="Tài khoản" image="person" catalog="system" id="InC-Dr-wZ7"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="o8Z-Yf-PFM">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
