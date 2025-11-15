@@ -13,19 +13,18 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         // Ẩn back button nếu muốn
         self.navigationItem.setHidesBackButton(true, animated: true)
         
-        // Set delegate
-        nameTextField.delegate = self
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
-        confirmPasswordTextField.delegate = self
+        // Set delegate cho tất cả TextField
+        [nameTextField, emailTextField, passwordTextField, confirmPasswordTextField].forEach {
+            $0?.delegate = self
+        }
         
-        // Return key
+        // Return key type
         nameTextField.returnKeyType = .next
         emailTextField.returnKeyType = .next
         passwordTextField.returnKeyType = .next
         confirmPasswordTextField.returnKeyType = .done
         
-        // Keyboard / autocorrection
+        // Kiểu bàn phím & autocapitalization
         emailTextField.keyboardType = .emailAddress
         emailTextField.autocapitalizationType = .none
         emailTextField.autocorrectionType = .no
@@ -50,6 +49,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             confirmPasswordTextField.becomeFirstResponder()
         case confirmPasswordTextField:
             textField.resignFirstResponder()
+            // Tự động gọi đăng ký khi nhấn Done ở confirm password
+            registerTap(self) 
         default:
             textField.resignFirstResponder()
         }
@@ -101,10 +102,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         UserDefaults.standard.set(password, forKey: "userPassword")
         UserDefaults.standard.set(name, forKey: "userName")
 
-        // Thông báo thành công
+        // Thông báo thành công và reset form
         let alert = UIAlertController(title: "Thành công", message: "Đăng ký thành công! Hãy đăng nhập lại.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            // Clear field
+            // Clear các field
             self.nameTextField.text = ""
             self.emailTextField.text = ""
             self.passwordTextField.text = ""
