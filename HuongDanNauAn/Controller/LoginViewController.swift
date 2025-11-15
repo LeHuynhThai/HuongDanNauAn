@@ -60,11 +60,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     // -----------------------------
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
-            passwordTextField.becomeFirstResponder() // chuyển focus sang password
-        } else {
-            textField.resignFirstResponder() // ẩn bàn phím khi nhấn Done
-        }
-        return true
+                // Chuyển focus sang password
+                passwordTextField.becomeFirstResponder()
+            } else if textField == passwordTextField {
+                // Nhấn Return ở password → login luôn
+                textField.resignFirstResponder() // ẩn bàn phím
+                loginTap(self) // gọi hàm login
+            } else {
+                textField.resignFirstResponder()
+            }
+            return true
     }
 
     // -----------------------------
