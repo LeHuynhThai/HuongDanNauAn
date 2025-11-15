@@ -34,7 +34,7 @@
         <!--Home View Controller-->
         <scene sceneID="UqA-9f-gUo">
             <objects>
-                <viewController storyboardIdentifier="HomeViewController" id="ENY-sC-DMA" customClass="HomeViewController" customModule="HuongDanNauAn" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ENY-sC-DMA" customClass="HomeViewController" customModule="HuongDanNauAn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleAspectFit" id="W2M-u3-eA7">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -71,30 +71,29 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Ij-5z-s0i">
-                                                    <rect key="frame" x="5" y="5" width="290" height="264"/>
+                                                    <rect key="frame" x="5" y="5" width="290" height="244"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QzE-1K-Bpg">
-                                                    <rect key="frame" x="5" y="274" width="290" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ViB-az-JYz">
+                                                    <rect key="frame" x="5" y="259" width="275" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="QzE-1K-Bpg" firstAttribute="leading" secondItem="Dkt-Y3-GkQ" secondAttribute="leading" constant="5" id="3Fg-bd-lbj"/>
-                                                <constraint firstItem="1Ij-5z-s0i" firstAttribute="leading" secondItem="Dkt-Y3-GkQ" secondAttribute="leading" constant="5" id="PDF-qK-OKn"/>
-                                                <constraint firstAttribute="bottom" secondItem="QzE-1K-Bpg" secondAttribute="bottom" constant="5" id="aWK-OX-tKJ"/>
-                                                <constraint firstItem="QzE-1K-Bpg" firstAttribute="top" secondItem="1Ij-5z-s0i" secondAttribute="bottom" constant="5" id="cVO-ic-E4q"/>
-                                                <constraint firstAttribute="trailing" secondItem="QzE-1K-Bpg" secondAttribute="trailing" constant="5" id="dWY-Wg-VGJ"/>
-                                                <constraint firstItem="QzE-1K-Bpg" firstAttribute="top" secondItem="1Ij-5z-s0i" secondAttribute="bottom" constant="5" id="ghO-U8-mGy"/>
-                                                <constraint firstAttribute="trailing" secondItem="1Ij-5z-s0i" secondAttribute="trailing" constant="5" id="hlI-qW-TKC"/>
-                                                <constraint firstItem="1Ij-5z-s0i" firstAttribute="top" secondItem="Dkt-Y3-GkQ" secondAttribute="top" constant="5" id="lTR-Hv-X4L"/>
+                                                <constraint firstItem="1Ij-5z-s0i" firstAttribute="top" secondItem="Dkt-Y3-GkQ" secondAttribute="top" constant="5" id="0Iy-Da-x4j"/>
+                                                <constraint firstItem="1Ij-5z-s0i" firstAttribute="leading" secondItem="Dkt-Y3-GkQ" secondAttribute="leading" constant="5" id="5di-ei-X7a"/>
+                                                <constraint firstAttribute="bottom" secondItem="ViB-az-JYz" secondAttribute="bottom" constant="20" symbolic="YES" id="7Ea-Ud-hfW"/>
+                                                <constraint firstAttribute="trailing" secondItem="1Ij-5z-s0i" secondAttribute="trailing" constant="5" id="PIr-Ha-AeN"/>
+                                                <constraint firstItem="ViB-az-JYz" firstAttribute="leading" secondItem="Dkt-Y3-GkQ" secondAttribute="leading" constant="5" id="WW5-sF-FA6"/>
+                                                <constraint firstAttribute="trailing" secondItem="ViB-az-JYz" secondAttribute="trailing" constant="20" symbolic="YES" id="X6S-3w-xXn"/>
+                                                <constraint firstItem="ViB-az-JYz" firstAttribute="top" secondItem="1Ij-5z-s0i" secondAttribute="bottom" constant="10" id="f26-XD-Zsy"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="300" height="300"/>
                                         <connections>
                                             <outlet property="RecipeImageView" destination="1Ij-5z-s0i" id="v4x-ZH-Afo"/>
-                                            <outlet property="RecipeName" destination="QzE-1K-Bpg" id="M0u-6V-8av"/>
+                                            <outlet property="RecipeName" destination="ViB-az-JYz" id="Ze9-1K-TFR"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -403,7 +402,7 @@
         <!--Home-->
         <scene sceneID="cJa-1t-hgO">
             <objects>
-                <tabBarController title="Home" id="1fU-Sg-UaG" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabBarController" title="Home" id="1fU-Sg-UaG" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="LBI-0j-85P"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ssk-nP-re4">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
