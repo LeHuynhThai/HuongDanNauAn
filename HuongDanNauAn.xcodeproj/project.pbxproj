@@ -17,6 +17,11 @@
 		8476B1602EBEE23800FD4811 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8476B15F2EBEE23800FD4811 /* HomeViewController.swift */; };
 		848EC0052EC83367002A9A45 /* RecipeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848EC0042EC83367002A9A45 /* RecipeDetailViewController.swift */; };
 		848EC0072EC83DF9002A9A45 /* SearchRecipeWithIngridientsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848EC0062EC83DF9002A9A45 /* SearchRecipeWithIngridientsViewController.swift */; };
+		84AB6E282EC87E3100BBC88D /* MyRecipesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB6E272EC87E3100BBC88D /* MyRecipesViewController.swift */; };
+		84AB6E2A2EC8839D00BBC88D /* AddRecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB6E292EC8839D00BBC88D /* AddRecipeViewController.swift */; };
+		84AB6E2C2EC8856100BBC88D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB6E2B2EC8856100BBC88D /* ProfileViewController.swift */; };
+		84AB6E2E2EC8870400BBC88D /* FavoriteRecipesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB6E2D2EC8870400BBC88D /* FavoriteRecipesViewController.swift */; };
+		84AB6E302EC887C100BBC88D /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB6E2F2EC887C100BBC88D /* EditProfileViewController.swift */; };
 		84B13A092EC73A8500A90BBF /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B13A082EC73A8500A90BBF /* SignUpViewController.swift */; };
 		84B13A0B2EC73ABF00A90BBF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B13A0A2EC73ABF00A90BBF /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +39,11 @@
 		8476B15F2EBEE23800FD4811 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		848EC0042EC83367002A9A45 /* RecipeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewController.swift; sourceTree = "<group>"; };
 		848EC0062EC83DF9002A9A45 /* SearchRecipeWithIngridientsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRecipeWithIngridientsViewController.swift; sourceTree = "<group>"; };
+		84AB6E272EC87E3100BBC88D /* MyRecipesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecipesViewController.swift; sourceTree = "<group>"; };
+		84AB6E292EC8839D00BBC88D /* AddRecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRecipeViewController.swift; sourceTree = "<group>"; };
+		84AB6E2B2EC8856100BBC88D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		84AB6E2D2EC8870400BBC88D /* FavoriteRecipesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipesViewController.swift; sourceTree = "<group>"; };
+		84AB6E2F2EC887C100BBC88D /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		84B13A082EC73A8500A90BBF /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		84B13A0A2EC73ABF00A90BBF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +95,11 @@
 				84B13A0A2EC73ABF00A90BBF /* LoginViewController.swift */,
 				848EC0042EC83367002A9A45 /* RecipeDetailViewController.swift */,
 				848EC0062EC83DF9002A9A45 /* SearchRecipeWithIngridientsViewController.swift */,
+				84AB6E272EC87E3100BBC88D /* MyRecipesViewController.swift */,
+				84AB6E292EC8839D00BBC88D /* AddRecipeViewController.swift */,
+				84AB6E2B2EC8856100BBC88D /* ProfileViewController.swift */,
+				84AB6E2D2EC8870400BBC88D /* FavoriteRecipesViewController.swift */,
+				84AB6E2F2EC887C100BBC88D /* EditProfileViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -190,12 +205,17 @@
 			files = (
 				848EC0072EC83DF9002A9A45 /* SearchRecipeWithIngridientsViewController.swift in Sources */,
 				84B13A0B2EC73ABF00A90BBF /* LoginViewController.swift in Sources */,
+				84AB6E2E2EC8870400BBC88D /* FavoriteRecipesViewController.swift in Sources */,
+				84AB6E282EC87E3100BBC88D /* MyRecipesViewController.swift in Sources */,
 				8452C4E92EC3A15500AB0D55 /* RecipeCell.swift in Sources */,
 				848EC0052EC83367002A9A45 /* RecipeDetailViewController.swift in Sources */,
+				84AB6E302EC887C100BBC88D /* EditProfileViewController.swift in Sources */,
 				8442D9082EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld in Sources */,
+				84AB6E2C2EC8856100BBC88D /* ProfileViewController.swift in Sources */,
 				84B13A092EC73A8500A90BBF /* SignUpViewController.swift in Sources */,
 				8442D8FE2EB5AE74004ABE47 /* AppDelegate.swift in Sources */,
 				8442D9002EB5AE74004ABE47 /* SceneDelegate.swift in Sources */,
+				84AB6E2A2EC8839D00BBC88D /* AddRecipeViewController.swift in Sources */,
 				8476B1602EBEE23800FD4811 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
