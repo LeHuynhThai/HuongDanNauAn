@@ -82,14 +82,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }))
         present(alert, animated: true)
     }
-
+    
     func goToHome() {
-        if let homeVC = storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
-            homeVC.modalPresentationStyle = .fullScreen
-            present(homeVC, animated: true)
+        if let tabBarVC = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") {
+            tabBarVC.modalPresentationStyle = .fullScreen
+            present(tabBarVC, animated: true)
         }
     }
-
 }
 
 
