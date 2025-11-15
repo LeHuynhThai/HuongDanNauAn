@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4WI-Lv-ZWv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UPd-Uw-gbG">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -17,7 +17,7 @@
                 <navigationController id="pgR-3f-Czb" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Trang chủ" image="house.fill" catalog="system" id="Nro-cK-Uef"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="DUa-6h-off">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <navigationBarAppearance key="standardAppearance">
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -36,11 +36,11 @@
             <objects>
                 <viewController id="ENY-sC-DMA" customClass="HomeViewController" customModule="HuongDanNauAn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleAspectFit" id="W2M-u3-eA7">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Tìm công thức" translatesAutoresizingMaskIntoConstraints="NO" id="O9T-oU-CFl">
-                                <rect key="frame" x="16" y="123" width="361" height="56"/>
+                                <rect key="frame" x="16" y="76" width="361" height="56"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -48,13 +48,13 @@
                                 </connections>
                             </searchBar>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Công thức đang hot" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tFq-D4-6XM">
-                                <rect key="frame" x="16" y="199" width="361" height="24"/>
+                                <rect key="frame" x="16" y="152" width="361" height="24"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yos-Hz-Tup">
-                                <rect key="frame" x="16" y="243" width="361" height="526"/>
+                                <rect key="frame" x="16" y="196" width="361" height="607"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bVY-6U-lbB">
                                     <size key="itemSize" width="128" height="128"/>
@@ -441,7 +441,7 @@
                 <navigationController id="T6v-c0-iUR" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Công thức" image="frying.pan" catalog="system" id="Ust-JP-I3F"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="TFD-pE-gZ9">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -458,7 +458,7 @@
                 <navigationController id="At1-iS-szm" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Nguyên liệu" image="carrot" catalog="system" id="NMd-ZC-pab"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WbX-8x-hJU">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -475,7 +475,7 @@
                 <navigationController id="piK-lj-FCt" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Tài khoản" image="person" catalog="system" id="InC-Dr-wZ7"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="o8Z-Yf-PFM">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -648,7 +648,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Fxh-o2-d7h">
-                                <rect key="frame" x="30" y="371.66666666666674" width="333" height="386.33333333333326"/>
+                                <rect key="frame" x="30" y="405.66666666666674" width="333" height="386.33333333333326"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="UserName" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FxB-YH-PaT" userLabel="Name">
                                         <rect key="frame" x="0.0" y="0.0" width="333" height="50"/>
@@ -669,7 +669,7 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="PassWord" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RuD-63-4vF" userLabel="PassWord">
-                                        <rect key="frame" x="0.0" y="140" width="333" height="50"/>
+                                        <rect key="frame" x="0.0" y="139.99999999999994" width="333" height="50"/>
                                         <color key="backgroundColor" red="0.31910021319999998" green="0.82598090889999998" blue="0.80631102570000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="c8O-L1-RTQ"/>
@@ -709,7 +709,6 @@
                                         <buttonConfiguration key="configuration" style="plain" title="Already have an account ? Login"/>
                                         <connections>
                                             <action selector="loginBtnTapped:" destination="EQ0-VI-5Si" eventType="touchUpInside" id="xVO-gk-po1"/>
-                                            <segue destination="4WI-Lv-ZWv" kind="presentation" modalPresentationStyle="fullScreen" id="oi9-PQ-IQ6"/>
                                         </connections>
                                     </button>
                                 </subviews>
