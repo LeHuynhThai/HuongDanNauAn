@@ -7,40 +7,34 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // --- Email TextField ---
-           emailTextField.delegate = self
-           emailTextField.keyboardType = .emailAddress   // bàn phím kiểu email
-           emailTextField.autocapitalizationType = .none
-           emailTextField.returnKeyType = .next
-           emailTextField.isSecureTextEntry = false     // Hiển thị bình thường
-           
-           // --- Password TextField ---
-           passwordTextField.delegate = self
-           passwordTextField.isSecureTextEntry = true   // ẩn ký tự
-           passwordTextField.autocapitalizationType = .none
-           passwordTextField.returnKeyType = .done
+
+        emailTextField.delegate = self
+        emailTextField.keyboardType = .emailAddress
+        emailTextField.autocapitalizationType = .none
+        emailTextField.autocorrectionType = .no
+        emailTextField.returnKeyType = .next
+        emailTextField.isSecureTextEntry = false
+
+        passwordTextField.delegate = self
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.autocapitalizationType = .none
+        passwordTextField.autocorrectionType = .no
+        passwordTextField.returnKeyType = .done
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // -----------------------------
-        // Bàn phím tự bật khi màn hình hiện
-        // -----------------------------
-        emailTextField.becomeFirstResponder()
+        super.viewWillAppear(animated)
+                emailTextField.text = ""
+                passwordTextField.text = ""
     }
 
-    // MARK: - Button Actions
     @IBAction func loginTap(_ sender: Any) {
         let email = emailTextField.text ?? ""
         let password = passwordTextField.text ?? ""
-        
-        let savedEmail = UserDefaults.standard.string(forKey: "userEmail")
-        let savedPassword = UserDefaults.standard.string(forKey: "userPassword")
-        
+
         if email.isEmpty || password.isEmpty {
             showAlert(message: "Vui lòng nhập đầy đủ thông tin.")
-        } else if email == savedEmail && password == savedPassword {
+        } else if DatabaseManager.shared.login(email: email, password: password) {
             showAlert(message: "Đăng nhập thành công!") {
                 self.goToHome()
             }
@@ -55,39 +49,26 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    // -----------------------------
-    // UITextFieldDelegate: Next / Done
-    // -----------------------------
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
-                // Chuyển focus sang password
-                passwordTextField.becomeFirstResponder()
-            } else if textField == passwordTextField {
-                // Nhấn Return ở password → login luôn
-                textField.resignFirstResponder() // ẩn bàn phím
-                loginTap(self) // gọi hàm login
-            } else {
-                textField.resignFirstResponder()
-            }
-            return true
+            passwordTextField.becomeFirstResponder()
+        } else if textField == passwordTextField {
+            textField.resignFirstResponder()
+            loginTap(self)
+        }
+        return true
     }
 
-    // -----------------------------
-    // Ẩn bàn phím khi chạm ngoài
-    // -----------------------------
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
 
-    // MARK: - Helper
     func showAlert(message: String, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: "Thông báo", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            completion?()
-        }))
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in completion?() })
         present(alert, animated: true)
     }
-    
+
     func goToHome() {
         if let tabBarVC = storyboard?.instantiateViewController(withIdentifier: "MainTabBarController") {
             tabBarVC.modalPresentationStyle = .fullScreen
@@ -95,5 +76,3 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
 }
-
-

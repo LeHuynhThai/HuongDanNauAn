@@ -9,67 +9,53 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Ẩn back button nếu muốn
         self.navigationItem.setHidesBackButton(true, animated: true)
-        
-        // Set delegate cho tất cả TextField
-        [nameTextField, emailTextField, passwordTextField, confirmPasswordTextField].forEach {
-            $0?.delegate = self
-        }
-        
-        // Return key type
+
+        let fields = [nameTextField, emailTextField, passwordTextField, confirmPasswordTextField]
+        fields.forEach { $0?.delegate = self }
+
         nameTextField.returnKeyType = .next
         emailTextField.returnKeyType = .next
         passwordTextField.returnKeyType = .next
         confirmPasswordTextField.returnKeyType = .done
-        
-        // Kiểu bàn phím & autocapitalization
+
         emailTextField.keyboardType = .emailAddress
         emailTextField.autocapitalizationType = .none
         emailTextField.autocorrectionType = .no
-        
+        emailTextField.isSecureTextEntry = false
+
         passwordTextField.isSecureTextEntry = true
         passwordTextField.autocapitalizationType = .none
         passwordTextField.autocorrectionType = .no
-        
+
         confirmPasswordTextField.isSecureTextEntry = true
         confirmPasswordTextField.autocapitalizationType = .none
         confirmPasswordTextField.autocorrectionType = .no
     }
 
-    // MARK: - UITextFieldDelegate: Next / Done
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
-        case nameTextField:
-            emailTextField.becomeFirstResponder()
-        case emailTextField:
-            passwordTextField.becomeFirstResponder()
-        case passwordTextField:
-            confirmPasswordTextField.becomeFirstResponder()
+        case nameTextField: emailTextField.becomeFirstResponder()
+        case emailTextField: passwordTextField.becomeFirstResponder()
+        case passwordTextField: confirmPasswordTextField.becomeFirstResponder()
         case confirmPasswordTextField:
             textField.resignFirstResponder()
-            // Tự động gọi đăng ký khi nhấn Done ở confirm password
-            registerTap(self) 
-        default:
-            textField.resignFirstResponder()
+            registerTap(self)
+        default: textField.resignFirstResponder()
         }
         return true
     }
 
-    // Tap ngoài ẩn bàn phím
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
 
-    // MARK: - Actions
     @IBAction func registerTap(_ sender: Any) {
         let name = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let email = emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let password = passwordTextField.text ?? ""
-        let confirm = confirmPasswordTextField.text ?? ""
+        let password = passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let confirm = confirmPasswordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
 
-        // Kiểm tra hợp lệ
         if name.isEmpty || email.isEmpty || password.isEmpty || confirm.isEmpty {
             showAlert(message: "Vui lòng nhập đầy đủ thông tin.")
             return
@@ -90,46 +76,37 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             return
         }
 
-        // Kiểm tra email đã đăng ký chưa
-        let savedEmail = UserDefaults.standard.string(forKey: "userEmail")
-        if savedEmail == email {
-            showAlert(message: "Email này đã được sử dụng rồi.")
+        if !DatabaseManager.shared.addUser(name: name, email: email, password: password) {
+            showAlert(message: "Email đã tồn tại hoặc lỗi hệ thống.")
             return
         }
 
-        // Lưu vào UserDefaults
-        UserDefaults.standard.set(email, forKey: "userEmail")
-        UserDefaults.standard.set(password, forKey: "userPassword")
-        UserDefaults.standard.set(name, forKey: "userName")
+        nameTextField.text = ""
+        emailTextField.text = ""
+        passwordTextField.text = ""
+        confirmPasswordTextField.text = ""
 
-        // Thông báo thành công và reset form
-        let alert = UIAlertController(title: "Thành công", message: "Đăng ký thành công! Hãy đăng nhập lại.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            // Clear các field
-            self.nameTextField.text = ""
-            self.emailTextField.text = ""
-            self.passwordTextField.text = ""
-            self.confirmPasswordTextField.text = ""
-            
-            // Quay về Login
+        showAlert(message: "Đăng ký thành công!") {
             self.navigationController?.popViewController(animated: true)
-        })
-        present(alert, animated: true)
+        }
     }
 
-    @IBAction func loginBtnTapped(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
-
-    // MARK: - Helpers
-    func showAlert(message: String) {
+    func showAlert(message: String, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: "Thông báo", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in completion?() })
         present(alert, animated: true)
     }
 
     func isValidEmail(_ email: String) -> Bool {
         let pattern = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
         return NSPredicate(format: "SELF MATCHES %@", pattern).evaluate(with: email)
+    }
+
+    @IBAction func loginBtnTapped(_ sender: Any) {
+        if let nav = self.navigationController {
+            nav.popViewController(animated: true)
+        } else {
+            self.dismiss(animated: true)
+        }
     }
 }
