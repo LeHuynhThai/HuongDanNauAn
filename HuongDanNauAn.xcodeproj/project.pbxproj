@@ -24,6 +24,9 @@
 		84AB6E302EC887C100BBC88D /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AB6E2F2EC887C100BBC88D /* EditProfileViewController.swift */; };
 		84B13A092EC73A8500A90BBF /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B13A082EC73A8500A90BBF /* SignUpViewController.swift */; };
 		84B13A0B2EC73ABF00A90BBF /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B13A0A2EC73ABF00A90BBF /* LoginViewController.swift */; };
+		84E09A652ECB2521000B637D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E09A642ECB2521000B637D /* User.swift */; };
+		84E09A672ECB2545000B637D /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E09A662ECB2545000B637D /* Recipe.swift */; };
+		84E09A692ECB2570000B637D /* FavoriteRecipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E09A682ECB2570000B637D /* FavoriteRecipe.swift */; };
 		FE0BE2C12ECA1B8D00AB933C /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0BE2C02ECA1B8D00AB933C /* DatabaseManager.swift */; };
 		FE0BE2C42ECA1C2E00AB933C /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = FE0BE2C32ECA1C2E00AB933C /* SQLite */; };
 /* End PBXBuildFile section */
@@ -48,6 +51,9 @@
 		84AB6E2F2EC887C100BBC88D /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		84B13A082EC73A8500A90BBF /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		84B13A0A2EC73ABF00A90BBF /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		84E09A642ECB2521000B637D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		84E09A662ECB2545000B637D /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		84E09A682ECB2570000B637D /* FavoriteRecipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRecipe.swift; sourceTree = "<group>"; };
 		FE0BE2C02ECA1B8D00AB933C /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,6 +118,9 @@
 			isa = PBXGroup;
 			children = (
 				FE0BE2C02ECA1B8D00AB933C /* DatabaseManager.swift */,
+				84E09A642ECB2521000B637D /* User.swift */,
+				84E09A662ECB2545000B637D /* Recipe.swift */,
+				84E09A682ECB2570000B637D /* FavoriteRecipe.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -218,7 +227,10 @@
 				84B13A0B2EC73ABF00A90BBF /* LoginViewController.swift in Sources */,
 				FE0BE2C12ECA1B8D00AB933C /* DatabaseManager.swift in Sources */,
 				84AB6E2E2EC8870400BBC88D /* FavoriteRecipesViewController.swift in Sources */,
+				84E09A652ECB2521000B637D /* User.swift in Sources */,
+				84E09A672ECB2545000B637D /* Recipe.swift in Sources */,
 				84AB6E282EC87E3100BBC88D /* MyRecipesViewController.swift in Sources */,
+				84E09A692ECB2570000B637D /* FavoriteRecipe.swift in Sources */,
 				8452C4E92EC3A15500AB0D55 /* RecipeCell.swift in Sources */,
 				848EC0052EC83367002A9A45 /* RecipeDetailViewController.swift in Sources */,
 				84AB6E302EC887C100BBC88D /* EditProfileViewController.swift in Sources */,

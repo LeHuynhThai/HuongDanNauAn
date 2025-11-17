@@ -115,7 +115,4 @@ class DatabaseManager {
             print("Lỗi lấy users: \(error)")
         }
     }
-
- 
-   
 }
