@@ -34,7 +34,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
         if email.isEmpty || password.isEmpty {
             showAlert(message: "Vui lòng nhập đầy đủ thông tin.")
-        } else if DatabaseManager.shared.login(email: email, password: password) {
+        } else if DatabaseManager.shared.login(emailAddress: email, password: password) {
             showAlert(message: "Đăng nhập thành công!") {
                 self.goToHome()
             }
