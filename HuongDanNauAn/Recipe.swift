@@ -15,7 +15,7 @@ class Recipe {
     // Enum độ khó
     enum Difficulty: String, CaseIterable {
         case easy = "Dễ"
-        case medium = "Trung bình"
+        case medium = "TB"
         case hard = "Khó"
     }
     

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8410AED22ECD6C58008D8B70 /* UserSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8410AED12ECD6C58008D8B70 /* UserSeed.swift */; };
+		8410AED42ECD7161008D8B70 /* RecipeSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8410AED32ECD7161008D8B70 /* RecipeSeed.swift */; };
+		8410AED62ECD743D008D8B70 /* seedFavorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8410AED52ECD743D008D8B70 /* seedFavorites.swift */; };
 		8442D8FE2EB5AE74004ABE47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442D8FD2EB5AE74004ABE47 /* AppDelegate.swift */; };
 		8442D9002EB5AE74004ABE47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8442D8FF2EB5AE74004ABE47 /* SceneDelegate.swift */; };
 		8442D9052EB5AE74004ABE47 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8442D9032EB5AE74004ABE47 /* Main.storyboard */; };
@@ -38,6 +41,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8410AED12ECD6C58008D8B70 /* UserSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSeed.swift; sourceTree = "<group>"; };
+		8410AED32ECD7161008D8B70 /* RecipeSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeSeed.swift; sourceTree = "<group>"; };
+		8410AED52ECD743D008D8B70 /* seedFavorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = seedFavorites.swift; sourceTree = "<group>"; };
 		8442D8FA2EB5AE74004ABE47 /* HuongDanNauAn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HuongDanNauAn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8442D8FD2EB5AE74004ABE47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8442D8FF2EB5AE74004ABE47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -168,6 +174,9 @@
 				84B2F82D2ECCA451004859D2 /* UserDatabase.swift */,
 				84B2F82F2ECCA494004859D2 /* RecipeDatabase.swift */,
 				84B2F8312ECCB928004859D2 /* FavoriteRecipeDatabase.swift */,
+				8410AED12ECD6C58008D8B70 /* UserSeed.swift */,
+				8410AED32ECD7161008D8B70 /* RecipeSeed.swift */,
+				8410AED52ECD743D008D8B70 /* seedFavorites.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -261,15 +270,18 @@
 				84E09A692ECB2570000B637D /* FavoriteRecipe.swift in Sources */,
 				8452C4E92EC3A15500AB0D55 /* RecipeCell.swift in Sources */,
 				848EC0052EC83367002A9A45 /* RecipeDetailViewController.swift in Sources */,
+				8410AED62ECD743D008D8B70 /* seedFavorites.swift in Sources */,
 				84B2F82E2ECCA451004859D2 /* UserDatabase.swift in Sources */,
 				84AB6E302EC887C100BBC88D /* EditProfileViewController.swift in Sources */,
 				8442D9082EB5AE74004ABE47 /* HuongDanNauAn.xcdatamodeld in Sources */,
+				8410AED42ECD7161008D8B70 /* RecipeSeed.swift in Sources */,
 				84AB6E2C2EC8856100BBC88D /* ProfileViewController.swift in Sources */,
 				84B13A092EC73A8500A90BBF /* SignUpViewController.swift in Sources */,
 				8442D8FE2EB5AE74004ABE47 /* AppDelegate.swift in Sources */,
 				D13B1FAC2ECC059700B146AB /* User.swift in Sources */,
 				84B2F8302ECCA494004859D2 /* RecipeDatabase.swift in Sources */,
 				8442D9002EB5AE74004ABE47 /* SceneDelegate.swift in Sources */,
+				8410AED22ECD6C58008D8B70 /* UserSeed.swift in Sources */,
 				84AB6E2A2EC8839D00BBC88D /* AddRecipeViewController.swift in Sources */,
 				D13B1FAE2ECC1FDB00B146AB /* SearchResultViewController.swift in Sources */,
 				8476B1602EBEE23800FD4811 /* HomeViewController.swift in Sources */,

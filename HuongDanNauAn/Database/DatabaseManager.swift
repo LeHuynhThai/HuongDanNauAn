@@ -39,10 +39,9 @@ class DatabaseManager {
     // MARK: - Init
     private init() {
         do {
-            let fileUrl = try FileManager.default
-                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                .appendingPathComponent("AppDatabase.sqlite3")
-
+            let projectPath = "/Users/admin/Desktop/HuongDanNauAn"
+            let fileUrl = URL(fileURLWithPath: projectPath).appendingPathComponent("AppDatabase.sqlite3")
+            
             db = try Connection(fileUrl.path)
             createTables()
 
