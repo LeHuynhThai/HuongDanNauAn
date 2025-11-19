@@ -230,13 +230,17 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
     @objc func saveRecipe() {
         // Lấy dữ liệu từ các field
         let name = nameTextField.text ?? ""
-        _ = descriptionTextView.textColor == .placeholderText ? "" : descriptionTextView.text ?? ""
-        _ = Int(timeTextField.text ?? "0") ?? 0
-        _ = levelSegmented.selectedSegmentIndex
         let ingredients = ingredientsTextView.textColor == .placeholderText ? "" : ingredientsTextView.text ?? ""
         let instructions = instructionsTextView.textColor == .placeholderText ? "" : instructionsTextView.text ?? ""
-        _ = recipeImageView.image
-        
+        let cookTime = Int(timeTextField.text ?? "0")
+        let difficulty: Recipe.Difficulty
+        switch levelSegmented.selectedSegmentIndex {
+        case 0: difficulty = .easy
+        case 1: difficulty = .medium
+        case 2: difficulty = .hard
+        default: difficulty = .medium
+        }
+
         // Kiểm tra dữ liệu cơ bản
         if name.isEmpty || ingredients.isEmpty || instructions.isEmpty {
             let alert = UIAlertController(title: "Lỗi", message: "Vui lòng điền đầy đủ thông tin", preferredStyle: .alert)
@@ -244,10 +248,44 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
             present(alert, animated: true)
             return
         }
-        
-        // TODO: Lưu vào database
-        print("Đã lưu công thức: \(name)")
+
+        // Tạm thời set userId = 1
+        let userId: Int64 = 1
+
+        // Thêm recipe vào database
+        let success = DatabaseManager.shared.addRecipe(
+            name: name,
+            ingredients: ingredients.components(separatedBy: "\n"),
+            instructions: instructions.components(separatedBy: "\n"),
+            userId: userId,
+            cookTime: cookTime,
+            difficulty: difficulty,
+            imageURL: nil
+        )
+
+        if success {
+            print("Đã lưu công thức: \(name)")
+            resetForm()
+        } else {
+            let alert = UIAlertController(title: "Lỗi", message: "Không thể lưu công thức", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
     }
+    
+    func resetForm() {
+        nameTextField.text = ""
+        timeTextField.text = ""
+        levelSegmented.selectedSegmentIndex = 0
+        recipeImageView.image = nil
+        
+        ingredientsTextView.text = "Nguyên liệu..."
+        ingredientsTextView.textColor = .placeholderText
+        
+        instructionsTextView.text = "Hướng dẫn..."
+        instructionsTextView.textColor = .placeholderText
+    }
+    
     
     // MARK: - Placeholder logic cho UITextView
     func textViewDidBeginEditing(_ textView: UITextView) {
