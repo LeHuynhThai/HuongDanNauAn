@@ -2,7 +2,7 @@ import Foundation
 import SQLite
 
 extension DatabaseManager {
-
+    
     // MARK: - Add Recipe
     func addRecipe(name: String,
                    ingredients: [String],
@@ -17,7 +17,7 @@ extension DatabaseManager {
             let instructionsData = try JSONEncoder().encode(instructions)
             let ingredientsString = String(data: ingredientsData, encoding: .utf8) ?? "[]"
             let instructionsString = String(data: instructionsData, encoding: .utf8) ?? "[]"
-
+            
             let insert = recipes.insert(
                 self.recipeName <- name,
                 self.recipeIngredients <- ingredientsString,
@@ -35,7 +35,7 @@ extension DatabaseManager {
             return false
         }
     }
-
+    
     // MARK: - Get Recipes by User
     func getRecipesByUser(_ userId: Int64) -> [Recipe] {
         var recipesList: [Recipe] = []
@@ -44,7 +44,7 @@ extension DatabaseManager {
                 let ingredients = decodeStringArray(row[self.recipeIngredients])
                 let instructions = decodeStringArray(row[self.recipeInstructions])
                 let difficulty = Recipe.Difficulty(rawValue: row[self.recipeDifficulty]) ?? .medium
-
+                
                 let recipeObj = Recipe(
                     recipeId: row[recipeId],
                     userId: row[recipeUserId],
@@ -63,7 +63,7 @@ extension DatabaseManager {
         }
         return recipesList
     }
-
+    
     // MARK: - Get All Recipes
     func getAllRecipes() -> [Recipe] {
         var recipesList: [Recipe] = []
@@ -72,7 +72,7 @@ extension DatabaseManager {
                 let ingredients = decodeStringArray(row[self.recipeIngredients])
                 let instructions = decodeStringArray(row[self.recipeInstructions])
                 let difficulty = Recipe.Difficulty(rawValue: row[self.recipeDifficulty]) ?? .medium
-
+                
                 let recipeObj = Recipe(
                     recipeId: row[recipeId],
                     userId: row[recipeUserId],
@@ -91,7 +91,7 @@ extension DatabaseManager {
         }
         return recipesList
     }
-
+    
     // MARK: - Update Recipe
     func updateRecipe(id: Int64,
                       name: String,
@@ -106,7 +106,7 @@ extension DatabaseManager {
             let instructionsData = try JSONEncoder().encode(instructions)
             let ingredientsString = String(data: ingredientsData, encoding: .utf8) ?? "[]"
             let instructionsString = String(data: instructionsData, encoding: .utf8) ?? "[]"
-
+            
             try db?.run(recipeToUpdate.update(
                 recipeName <- name,
                 recipeIngredients <- ingredientsString,
@@ -121,7 +121,7 @@ extension DatabaseManager {
             return false
         }
     }
-
+    
     // MARK: - Delete Recipe
     func deleteRecipe(id: Int64) -> Bool {
         do {
@@ -133,7 +133,7 @@ extension DatabaseManager {
             return false
         }
     }
-
+    
     // MARK: - Print All Recipes
     func printAllRecipes() {
         do {
@@ -154,7 +154,7 @@ extension DatabaseManager {
             print("Lỗi lấy recipes: \(error)")
         }
     }
-
+    
     // MARK: - Helper: Decode JSON string to [String]
     private func decodeStringArray(_ jsonString: String) -> [String] {
         guard let data = jsonString.data(using: .utf8) else { return [] }
@@ -165,7 +165,95 @@ extension DatabaseManager {
             return []
         }
     }
-
+    
+    // MARK: - Search Recipes by Ingredient
+    func searchRecipesByIngredient(_ ingredient: String) -> [Recipe] {
+        var recipesList: [Recipe] = []
+        
+        guard !ingredient.isEmpty else {
+            return getAllRecipes() // Nếu rỗng, trả về tất cả
+        }
+        
+        do {
+            for row in try db!.prepare(recipes) {
+                let ingredientsString = row[recipeIngredients]
+                let ingredients = decodeStringArray(ingredientsString)
+                
+                // Kiểm tra xem có nguyên liệu nào chứa từ khóa tìm kiếm không
+                let hasIngredient = ingredients.contains { ingr in
+                    ingr.localizedCaseInsensitiveContains(ingredient)
+                }
+                
+                if hasIngredient {
+                    let instructions = decodeStringArray(row[recipeInstructions])
+                    let difficulty = Recipe.Difficulty(rawValue: row[recipeDifficulty]) ?? .medium
+                    
+                    let recipeObj = Recipe(
+                        recipeId: row[recipeId],
+                        userId: row[recipeUserId],
+                        name: row[recipeName],
+                        ingredients: ingredients,
+                        instructions: instructions,
+                        createdAt: row[recipeCreatedAt],
+                        cookTime: row[recipeCookTime],
+                        difficulty: difficulty,
+                        imageURL: row[recipeImageURL]
+                    )
+                    recipesList.append(recipeObj)
+                }
+            }
+        } catch {
+            print("Lỗi tìm kiếm recipes: \(error)")
+        }
+        
+        return recipesList
+    }
+    
+    // MARK: - Search Recipes by Multiple Ingredients
+    func searchRecipesByIngredients(_ ingredients: [String]) -> [Recipe] {
+        var recipesList: [Recipe] = []
+        
+        guard !ingredients.isEmpty else {
+            return getAllRecipes()
+        }
+        
+        do {
+            for row in try db!.prepare(recipes) {
+                let ingredientsString = row[recipeIngredients]
+                let recipeIngredients = decodeStringArray(ingredientsString)
+                
+                // Kiểm tra xem recipe có chứa TẤT CẢ nguyên liệu tìm kiếm không
+                let hasAllIngredients = ingredients.allSatisfy { searchIngredient in
+                    recipeIngredients.contains { recipeIngr in
+                        recipeIngr.localizedCaseInsensitiveContains(searchIngredient)
+                    }
+                }
+                
+                if hasAllIngredients {
+                    let instructions = decodeStringArray(row[recipeInstructions])
+                    let difficulty = Recipe.Difficulty(rawValue: row[recipeDifficulty]) ?? .medium
+                    
+                    let recipeObj = Recipe(
+                        recipeId: row[recipeId],
+                        userId: row[recipeUserId],
+                        name: row[recipeName],
+                        ingredients: recipeIngredients,
+                        instructions: instructions,
+                        createdAt: row[recipeCreatedAt],
+                        cookTime: row[recipeCookTime],
+                        difficulty: difficulty,
+                        imageURL: row[recipeImageURL]
+                    )
+                    recipesList.append(recipeObj)
+                }
+            }
+        } catch {
+            print("Lỗi tìm kiếm recipes: \(error)")
+        }
+        
+        return recipesList
+    }
+    
     // MARK: - Database Path
     func getDatabasePath() -> String? {
         do {

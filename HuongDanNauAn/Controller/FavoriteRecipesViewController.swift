@@ -1,17 +1,51 @@
-//
-//  FavoriteRecipesViewController.swift
-//  HuongDanNauAn
-//
-//  Created by admin on 15/11/2025.
-//
-
 import UIKit
 
 class FavoriteRecipesViewController: UIViewController {
-
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    // Mảng chứa danh sách favorite recipes
+    var favoriteRecipes: [Recipe] = []
+    
+    // ID của user hiện tại (tạm thời hardcode, sau này lấy từ UserDefaults hoặc Session)
+    var currentUserId: Int64 = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        setupTableView()
+        loadFavoriteRecipes()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Reload mỗi khi quay lại màn hình này
+        loadFavoriteRecipes()
+    }
+    
+    func setupTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    // Load danh sách favorite recipes của user
+    func loadFavoriteRecipes() {
+        // Bước 1: Lấy danh sách favorite của user
+        let favorites = DatabaseManager.shared.getFavoritesByUser(currentUserId)
+        
+        // Bước 2: Lấy chi tiết recipe từ recipeId
+        favoriteRecipes = []
+        let allRecipes = DatabaseManager.shared.getAllRecipes()
+        
+        for favorite in favorites {
+            // Tìm recipe có id tương ứng
+            if let recipe = allRecipes.first(where: { $0.recipeId == favorite.recipeId }) {
+                favoriteRecipes.append(recipe)
+            }
+        }
+        
+        tableView.reloadData()
+        print("Đã load \(favoriteRecipes.count) favorite recipes")
     }
     
     func setupNavigationBar() {
@@ -44,5 +78,77 @@ class FavoriteRecipesViewController: UIViewController {
         
         let leftBarButton = UIBarButtonItem(customView: leftStackView)
         navigationItem.leftBarButtonItem = leftBarButton
+    }
+}
+
+extension FavoriteRecipesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    // Số lượng row = số lượng favorite recipes
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return favoriteRecipes.count
+    }
+    
+    // Hiển thị dữ liệu lên từng cell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteCell", for: indexPath) as! FavoriteRecipeCell
+        
+        let recipe = favoriteRecipes[indexPath.row]
+        
+        // Gán dữ liệu vào cell
+        cell.RecipeName.text = recipe.name
+        cell.RecipeTime.text = "\(recipe.cookTime ?? 0) phút"
+        cell.RecipyDifficulty.text = recipe.difficulty.rawValue.capitalized
+        
+        // Load hình ảnh
+        if let imageURL = recipe.imageURL {
+            cell.RecipeImage.image = UIImage(named: imageURL)
+        } else {
+            cell.RecipeImage.image = UIImage(named: "chef")
+        }
+        
+        // Bo góc cho hình ảnh
+        cell.RecipeImage.layer.cornerRadius = 8
+        cell.RecipeImage.clipsToBounds = true
+        
+        return cell
+    }
+    
+    // Chiều cao của mỗi row
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    // Khi tap vào cell -> Chuyển sang màn hình chi tiết recipe
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let recipe = favoriteRecipes[indexPath.row]
+        print("Đã chọn: \(recipe.name)")
+        
+        // TODO: Navigate sang màn hình chi tiết recipe
+        // let detailVC = RecipeDetailViewController()
+        // detailVC.recipe = recipe
+        // navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    // Swipe sang trái để xóa khỏi favorite
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let recipe = favoriteRecipes[indexPath.row]
+            
+            // Xóa khỏi database
+            let success = DatabaseManager.shared.removeFavoriteRecipe(
+                userId: currentUserId,
+                recipeId: recipe.recipeId
+            )
+            
+            if success {
+                // Xóa khỏi mảng
+                favoriteRecipes.remove(at: indexPath.row)
+                // Xóa row khỏi tableView
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                print("Đã xóa \(recipe.name) khỏi favorite")
+            }
+        }
     }
 }
