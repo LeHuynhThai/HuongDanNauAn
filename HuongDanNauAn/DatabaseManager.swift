@@ -3,71 +3,127 @@ import SQLite
 
 class DatabaseManager {
     static let shared = DatabaseManager()
-    private var db: Connection?
+    var db: Connection?
 
-    private let users = Table("users")
-    private let id = Expression<Int64>("id")
-    private let name = Expression<String>("name")
-    private let email = Expression<String>("email")
-    private let password = Expression<String>("password") // plaintext, debug only
+    // MARK: - Tables & Columns
 
+    // Users table
+    let users = Table("users")
+    let userId = Expression<Int64>("user_id")
+    let userName = Expression<String>("user_name")
+    let emailAddress = Expression<String>("email_address")
+    let password = Expression<String>("password")
+    let userImage = Expression<String?>("user_image")
+    let createdAt = Expression<Date>("created_at")
+    let updatedAt = Expression<Date>("update_at")
+
+    // Recipes table
+    let recipes = Table("recipes")
+    let recipeId = Expression<Int64>("recipe_id")
+    let recipeUserId = Expression<Int64>("user_id")
+    let recipeName = Expression<String>("recipe_name")
+    let recipeIngredients = Expression<String>("recipe_ingredients")
+    let recipeInstructions = Expression<String>("recipe_instructions")
+    let recipeCreatedAt = Expression<Date>("created_at")
+    let recipeCookTime = Expression<Int?>("recipe_time")
+    let recipeDifficulty = Expression<String>("recipe_difficulty")
+    let recipeImageURL = Expression<String?>("recipe_image")
+
+    // FavoriteRecipes table
+    let favoriteRecipes = Table("favorite_recipes")
+    let favoriteId = Expression<Int64>("favorite_id")
+    let favoriteUserId = Expression<Int64>("user_id")
+    let favoriteRecipeId = Expression<Int64>("recipe_id")
+    let favoriteCreatedAt = Expression<Date>("created_at")
+
+    // MARK: - Init
     private init() {
         do {
             let fileUrl = try FileManager.default
                 .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                .appendingPathComponent("AccCount.sqlite3")
+                .appendingPathComponent("AppDatabase.sqlite3")
+
             db = try Connection(fileUrl.path)
-            createTable()
+            createTables()
+
+            // In ra console đường dẫn database
             print("Database lưu ở: \(fileUrl.path)")
         } catch {
             print("Không tạo được database: \(error)")
         }
     }
 
-    private func createTable() {
+    // MARK: - Create Tables
+    func createTables() {
         do {
+            // Users table
             try db?.run(users.create(ifNotExists: true) { t in
-                t.column(id, primaryKey: .autoincrement)
-                t.column(name)
-                t.column(email, unique: true, collate: .nocase)
+                t.column(userId, primaryKey: .autoincrement)
+                t.column(userName)
+                t.column(emailAddress, unique: true, collate: .nocase)
                 t.column(password)
+                t.column(userImage)
+                t.column(createdAt, defaultValue: Date())
+                t.column(updatedAt, defaultValue: Date())
             })
+
+            // Recipes table
+            try db?.run(recipes.create(ifNotExists: true) { t in
+                t.column(recipeId, primaryKey: .autoincrement)
+                t.column(recipeUserId)
+                t.column(recipeName)
+                t.column(recipeIngredients)
+                t.column(recipeInstructions)
+                t.column(recipeCreatedAt, defaultValue: Date())
+                t.column(recipeCookTime)
+                t.column(recipeDifficulty)
+                t.column(recipeImageURL)
+                t.foreignKey(recipeUserId, references: users, userId, delete: .cascade)
+            })
+
+            // FavoriteRecipes table
+            try db?.run(favoriteRecipes.create(ifNotExists: true) { t in
+                t.column(favoriteId, primaryKey: .autoincrement)
+                t.column(favoriteUserId)
+                t.column(favoriteRecipeId)
+                t.column(favoriteCreatedAt, defaultValue: Date())
+                t.foreignKey(favoriteUserId, references: users, userId, delete: .cascade)
+                t.foreignKey(favoriteRecipeId, references: recipes, recipeId, delete: .cascade)
+            })
+
         } catch {
             print("Không tạo được table: \(error)")
         }
     }
 
+    // MARK: - User Functions
+
+    /// Thêm user mới (nếu cần)
     func addUser(name: String, email: String, password: String) -> Bool {
-        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        if isEmailExist(trimmedEmail) {
-            print("Email đã tồn tại")
-            return false
-        }
-
+        guard let db = db else { return false }
         do {
             let insert = users.insert(
-                self.name <- name,
-                self.email <- trimmedEmail,
-                self.password <- trimmedPassword
+                userName <- name,
+                emailAddress <- email,
+                self.password <- password,
+                createdAt <- Date(),
+                updatedAt <- Date()
             )
-            try db?.run(insert)
+            try db.run(insert)
             print("Đã thêm user: \(name) - \(email)")
             return true
         } catch {
-            print("Lỗi khi thêm user: \(error)")
+            print("Lỗi thêm user: \(error)")
             return false
         }
     }
 
+    /// Login: kiểm tra email + password
     func login(email: String, password: String) -> Bool {
-        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
-
+        guard let db = db else { return false }
         do {
-            let query = users.filter(email == trimmedEmail && self.password == trimmedPassword)
-            let count = try db?.scalar(query.count) ?? 0
+            let query = users.filter(emailAddress == email && self.password == password)
+            let count = try db.scalar(query.count)
             return count > 0
         } catch {
             print("Lỗi login: \(error)")
@@ -75,42 +131,15 @@ class DatabaseManager {
         }
     }
 
-    func isEmailExist(_ emailToCheck: String) -> Bool {
-        let trimmedEmail = emailToCheck.trimmingCharacters(in: .whitespacesAndNewlines)
+    /// In tất cả users (debug)
+    func printAllUsers() {
         do {
-            let query = users.filter(email == trimmedEmail)
-            let count = try db?.scalar(query.count) ?? 0
-            return count > 0
-        } catch {
-            print("Lỗi kiểm tra email: \(error)")
-            return false
-        }
-    }
-
-    // ===========================================
-    // Hàm debug toàn bộ database ra console
-    // ===========================================
-    func debugDatabase() {
-        do {
-            // In đường dẫn file
-            let fileUrl = try FileManager.default
-                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                .appendingPathComponent("AccCount.sqlite3")
-            print("===== Debug Database =====")
-            print("Đường dẫn database: \(fileUrl.path)\n")
-
-            // In tất cả user
-            if let rows = try db?.prepare(users) {
-                print("----- Danh sách user -----")
-                for row in rows {
-                    print("ID: \(row[id]), Name: \(row[name]), Email: \(row[email]), Password: \(row[password])")
-                }
-                print("----- Kết thúc danh sách -----\n")
-            } else {
-                print("Chưa có user nào trong database.\n")
+            guard let db = db else { return }
+            for row in try db.prepare(users) {
+                print("ID: \(row[userId]), Name: \(row[userName]), Email: \(row[emailAddress]), Password: \(row[password])")
             }
         } catch {
-            print("Lỗi debug database: \(error)")
+            print("Lỗi lấy users: \(error)")
         }
     }
 }

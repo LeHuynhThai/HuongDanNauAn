@@ -8,6 +8,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Cấu hình email TextField
         emailTextField.delegate = self
         emailTextField.keyboardType = .emailAddress
         emailTextField.autocapitalizationType = .none
@@ -15,6 +16,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         emailTextField.returnKeyType = .next
         emailTextField.isSecureTextEntry = false
 
+        // Cấu hình password TextField
         passwordTextField.delegate = self
         passwordTextField.isSecureTextEntry = true
         passwordTextField.autocapitalizationType = .none
@@ -23,10 +25,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-                emailTextField.text = ""
-                passwordTextField.text = ""
+        super.viewDidAppear(animated)
+        // Xóa dữ liệu khi view hiện ra
+        emailTextField.text = ""
+        passwordTextField.text = ""
     }
+
+    // MARK: - Actions
 
     @IBAction func loginTap(_ sender: Any) {
         let email = emailTextField.text ?? ""
@@ -49,6 +54,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+    // MARK: - UITextFieldDelegate
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailTextField {
             passwordTextField.becomeFirstResponder()
@@ -62,6 +69,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+
+    // MARK: - Helper Functions
 
     func showAlert(message: String, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: "Thông báo", message: message, preferredStyle: .alert)
