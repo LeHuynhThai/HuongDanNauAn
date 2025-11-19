@@ -11,6 +11,14 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
         setupCollectionView()
+        // Thêm delegate cho searchBar để bắt sự kiện tìm kiếm
+        searchBar.delegate = self
+        loadRecipes()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Reload lại data mỗi khi quay lại màn hình này (để cập nhật món mới/yêu thích)
         loadRecipes()
     }
     
@@ -28,12 +36,14 @@ class HomeViewController: UIViewController {
     }
     
     func loadRecipes() {
+        // Load dữ liệu thật từ Database
         recipes = DatabaseManager.shared.getAllRecipes()
         CollectionView.reloadData()
         print("Đã load \(recipes.count) recipes")
     }
     
     func setupNavigationBar() {
+        // 1. Setup Logo và Title (Giữ nguyên code của bạn)
         let leftStackView = UIStackView()
         leftStackView.axis = .horizontal
         leftStackView.spacing = 8
@@ -58,9 +68,40 @@ class HomeViewController: UIViewController {
         
         let leftBarButton = UIBarButtonItem(customView: leftStackView)
         navigationItem.leftBarButtonItem = leftBarButton
+        
+        // 2. Setup Nút Profile (Lấy lại từ Main sang)
+        let profileButton = UIButton(type: .custom)
+        profileButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        profileButton.layer.cornerRadius = 20
+        profileButton.clipsToBounds = true
+        if let avatarImage = UIImage(named: "user_avatar") {
+            profileButton.setImage(avatarImage, for: .normal)
+            profileButton.imageView?.contentMode = .scaleAspectFill
+        } else {
+            profileButton.backgroundColor = .systemGray4 // Màu mặc định nếu không có ảnh
+        }
+        profileButton.layer.borderWidth = 0.5
+        profileButton.layer.borderColor = UIColor.systemGray5.cgColor
+        
+        // Thêm action cho nút Profile nếu cần
+        // profileButton.addTarget(self, action: #selector(didTapProfile), for: .touchUpInside)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton)
+    }
+    
+    // Logic chuẩn bị chuyển màn hình Search (Lấy từ Main sang nhưng chỉnh lại cho hợp lý)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showSearchResults",
+           let destination = segue.destination as? SearchResultViewController,
+           let searchText = sender as? String {
+            // Truyền từ khóa tìm kiếm sang màn hình kết quả
+            // destination.searchKeyword = searchText
+            print("Đang tìm kiếm: \(searchText)")
+        }
     }
 }
 
+// MARK: - UICollectionView Delegate & DataSource
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -71,12 +112,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecipeCell
         let recipe = recipes[indexPath.row]
         
-        // Gán dữ liệu vào cell
+        // Gán dữ liệu thật vào cell
         cell.RecipeName.text = recipe.name
+        // Kiểm tra an toàn cho cookTime
         cell.RecipeTime.text = "\(recipe.cookTime ?? 0) phút"
+        // Hiển thị độ khó
         cell.RecipeDifficulty.text = recipe.difficulty.rawValue.uppercased()
                 
-        // Load hình ảnh từ Assets (nếu có)
+        // Load hình ảnh
         if let imageURL = recipe.imageURL {
             cell.RecipeImageView.image = UIImage(named: imageURL)
         } else {
@@ -97,5 +140,15 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let textHeight: CGFloat = 44 + 24 + 20
         
         return CGSize(width: width, height: imageHeight + textHeight)
+    }
+}
+
+// MARK: - SearchBar Delegate (Lấy lại từ Main)
+extension HomeViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder() // Ẩn bàn phím
+        if let text = searchBar.text, !text.isEmpty {
+            performSegue(withIdentifier: "showSearchResults", sender: text)
+        }
     }
 }
