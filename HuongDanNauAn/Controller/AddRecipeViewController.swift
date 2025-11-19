@@ -240,6 +240,24 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
         case 2: difficulty = .hard
         default: difficulty = .medium
         }
+        
+        guard let image = recipeImageView.image else {
+            let alert = UIAlertController(title: "Thiếu ảnh",
+                                          message: "Vui lòng chọn một ảnh món ăn",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            return
+        }
+
+        guard let imageFileName = saveImageToDocuments(image) else {
+            let alert = UIAlertController(title: "Lỗi ảnh",
+                                          message: "Không thể lưu ảnh",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            return
+        }
 
         // Kiểm tra dữ liệu cơ bản
         if name.isEmpty || ingredients.isEmpty || instructions.isEmpty {
@@ -260,7 +278,7 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
             userId: userId,
             cookTime: cookTime,
             difficulty: difficulty,
-            imageURL: nil
+            imageURL: imageFileName
         )
 
         if success {
@@ -272,6 +290,40 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
             present(alert, animated: true)
         }
     }
+    
+    func saveImageToDocuments(_ image: UIImage) -> String? {
+        guard let data = image.jpegData(compressionQuality: 0.8) else { return nil }
+
+        // Tạo tên file
+        let filename = "recipe_\(UUID().uuidString).jpg"
+
+        // Thư mục Documents/recipe_images
+        let fileManager = FileManager.default
+        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let imagesFolderURL = documentsURL.appendingPathComponent("recipe_images")
+
+        // Nếu thư mục chưa tồn tại thì tạo
+        if !fileManager.fileExists(atPath: imagesFolderURL.path) {
+            do {
+                try fileManager.createDirectory(at: imagesFolderURL, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("Lỗi tạo thư mục recipe_images: \(error)")
+                return nil
+            }
+        }
+
+        // Đường dẫn file ảnh
+        let fileURL = imagesFolderURL.appendingPathComponent(filename)
+
+        do {
+            try data.write(to: fileURL)
+            return filename // lưu tên file vào database, khi load sẽ nối path với imagesFolderURL
+        } catch {
+            print("Lỗi lưu ảnh: \(error)")
+            return nil
+        }
+    }
+
     
     func resetForm() {
         nameTextField.text = ""
