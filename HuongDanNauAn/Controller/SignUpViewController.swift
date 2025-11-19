@@ -76,7 +76,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             return
         }
 
-        if !DatabaseManager.shared.addUser(name: name, email: email, password: password) {
+        if !DatabaseManager.shared.addUser(userName: name, emailAddress: email, password: password) {
             showAlert(message: "Email đã tồn tại hoặc lỗi hệ thống.")
             return
         }
