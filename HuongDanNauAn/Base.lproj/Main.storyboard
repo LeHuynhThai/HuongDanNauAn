@@ -146,9 +146,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="qcm-UK-bKU"/>
                     <connections>
-                        <outlet property="CollectionView" destination="yos-Hz-Tup" id="ZTc-Ya-gsq"/>
+                        <outlet property="CollectionView" destination="yos-Hz-Tup" id="g58-T4-FPs"/>
                         <outlet property="collectionView" destination="yos-Hz-Tup" id="EE5-b8-YnZ"/>
-                        <outlet property="searchBar" destination="O9T-oU-CFl" id="HgX-gK-rsf"/>
+                        <outlet property="searchBar" destination="O9T-oU-CFl" id="0TU-W6-jM2"/>
                         <segue destination="irj-ba-VZ1" kind="show" identifier="showSearchResults" id="zKK-J8-mgk"/>
                     </connections>
                 </viewController>
