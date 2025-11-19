@@ -9,11 +9,10 @@ class DatabaseManager {
     private let id = Expression<Int64>("id")
     private let name = Expression<String>("name")
     private let email = Expression<String>("email")
-    private let password = Expression<String>("password")
+    private let password = Expression<String>("password") // plaintext, debug only
 
     private init() {
         do {
-            // Lưu database trong Documents folder của app
             let fileUrl = try FileManager.default
                 .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 .appendingPathComponent("AccCount.sqlite3")
@@ -30,23 +29,11 @@ class DatabaseManager {
             try db?.run(users.create(ifNotExists: true) { t in
                 t.column(id, primaryKey: .autoincrement)
                 t.column(name)
-                t.column(email, unique: true, collate: .nocase) // Không phân biệt hoa thường
+                t.column(email, unique: true, collate: .nocase)
                 t.column(password)
             })
         } catch {
             print("Không tạo được table: \(error)")
-        }
-    }
-
-    func isEmailExist(_ emailToCheck: String) -> Bool {
-        let trimmedEmail = emailToCheck.trimmingCharacters(in: .whitespacesAndNewlines)
-        do {
-            let query = users.filter(email == trimmedEmail)
-            let count = try db?.scalar(query.count) ?? 0
-            return count > 0
-        } catch {
-            print("Lỗi kiểm tra email: \(error)")
-            return false
         }
     }
 
@@ -66,6 +53,7 @@ class DatabaseManager {
                 self.password <- trimmedPassword
             )
             try db?.run(insert)
+            print("Đã thêm user: \(name) - \(email)")
             return true
         } catch {
             print("Lỗi khi thêm user: \(error)")
@@ -87,35 +75,42 @@ class DatabaseManager {
         }
     }
 
-    func getAllUsers() -> [String] {
-        var list: [String] = []
+    func isEmailExist(_ emailToCheck: String) -> Bool {
+        let trimmedEmail = emailToCheck.trimmingCharacters(in: .whitespacesAndNewlines)
         do {
-            if let rows = try db?.prepare(users) {
-                for row in rows {
-                    list.append(row[email])
-                }
-            }
+            let query = users.filter(email == trimmedEmail)
+            let count = try db?.scalar(query.count) ?? 0
+            return count > 0
         } catch {
-            print("Lỗi lấy users: \(error)")
+            print("Lỗi kiểm tra email: \(error)")
+            return false
         }
-        return list
     }
 
-    // In tất cả user ra console (debug)
-    func printAllUsers() {
+    // ===========================================
+    // Hàm debug toàn bộ database ra console
+    // ===========================================
+    func debugDatabase() {
         do {
+            // In đường dẫn file
+            let fileUrl = try FileManager.default
+                .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                .appendingPathComponent("AccCount.sqlite3")
+            print("===== Debug Database =====")
+            print("Đường dẫn database: \(fileUrl.path)\n")
+
+            // In tất cả user
             if let rows = try db?.prepare(users) {
-                print("===== Danh sách người dùng =====")
+                print("----- Danh sách user -----")
                 for row in rows {
                     print("ID: \(row[id]), Name: \(row[name]), Email: \(row[email]), Password: \(row[password])")
                 }
-                print("===== Kết thúc danh sách =====")
+                print("----- Kết thúc danh sách -----\n")
+            } else {
+                print("Chưa có user nào trong database.\n")
             }
         } catch {
-            print("Lỗi lấy users: \(error)")
+            print("Lỗi debug database: \(error)")
         }
     }
-
- 
-   
 }
