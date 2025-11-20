@@ -1,4 +1,3 @@
-cat << EOF > .gitignore
 # Xcode build files and derived data
 build/
 DerivedData/
@@ -8,8 +7,16 @@ xcuserdata/
 *.xcworkspace
 *.xcuserdatad
 
-# macOS system files
+# CocoaPods (Nếu bạn có dùng)
+# Nếu bạn dùng Cocoapods, hãy bỏ comment dòng dưới đây. 
+# Tuy nhiên, khuyến khích giữ Podfile.lock lại.
+# Pods/ 
 
+# Swift Package Manager (SPM)
+.swiftpm/
+
+# macOS system files and configuration
+.DS_Store
+
+# User-generated files (File không nên push lên server)
 AppDatabase.sqlite3
-
-

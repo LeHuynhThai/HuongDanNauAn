@@ -82,5 +82,29 @@ extension DatabaseManager {
             print("Lỗi lấy users: \(error)")
         }
     }
+    
+    func getUserByEmail(_ email: String) -> (id: Int64, name: String, email: String, password: String, image: String?)? {
+        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        do {
+            let query = users.filter(emailAddress == trimmedEmail)
+            
+            if let row = try db?.pluck(query) {
+                return (
+                    id: row[userId],
+                    name: row[userName],
+                    email: row[emailAddress],
+                    password: row[password],
+                    image: row[userImage]
+                )
+            }
+            
+            return nil
+        }
+        catch {
+            print("Lỗi getUserByEmail: \(error)")
+            return nil
+        }
+    }
 }
 

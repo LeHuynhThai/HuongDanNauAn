@@ -15,7 +15,6 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
     
     let recipeImageView = UIImageView()
     let nameTextField = UITextField()
-    let descriptionTextView = UITextView()
     let timeTextField = UITextField()
     let levelSegmented = UISegmentedControl(items: ["Dễ","Trung bình","Khó"])
     let ingredientsTextView = UITextView()
@@ -120,23 +119,6 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
             nameTextField.heightAnchor.constraint(equalToConstant: 44)
         ])
         
-        // Description
-        descriptionTextView.translatesAutoresizingMaskIntoConstraints = false
-        descriptionTextView.delegate = self
-        descriptionTextView.layer.borderWidth = 0.5
-        descriptionTextView.layer.borderColor = UIColor.systemGray4.cgColor
-        descriptionTextView.layer.cornerRadius = 8
-        descriptionTextView.font = .systemFont(ofSize: 16)
-        descriptionTextView.text = "Mô tả..."
-        descriptionTextView.textColor = .placeholderText
-        contentView.addSubview(descriptionTextView)
-        NSLayoutConstraint.activate([
-            descriptionTextView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 16),
-            descriptionTextView.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
-            descriptionTextView.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
-            descriptionTextView.heightAnchor.constraint(equalToConstant: 80)
-        ])
-        
         // Time TextField
         timeTextField.translatesAutoresizingMaskIntoConstraints = false
         timeTextField.placeholder = "Thời gian (phút)"
@@ -150,7 +132,7 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
         contentView.addSubview(levelSegmented)
         
         NSLayoutConstraint.activate([
-            timeTextField.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 16),
+            timeTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 16),
             timeTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             timeTextField.widthAnchor.constraint(equalToConstant: 120),
             timeTextField.heightAnchor.constraint(equalToConstant: 44),
@@ -174,7 +156,7 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
             ingredientsTextView.topAnchor.constraint(equalTo: timeTextField.bottomAnchor, constant: 16),
             ingredientsTextView.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             ingredientsTextView.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
-            ingredientsTextView.heightAnchor.constraint(equalToConstant: 120)
+            ingredientsTextView.heightAnchor.constraint(equalToConstant: 150)
         ])
         
         // Instructions TextView
@@ -191,7 +173,7 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
             instructionsTextView.topAnchor.constraint(equalTo: ingredientsTextView.bottomAnchor, constant: 16),
             instructionsTextView.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             instructionsTextView.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
-            instructionsTextView.heightAnchor.constraint(equalToConstant: 180)
+            instructionsTextView.heightAnchor.constraint(equalToConstant: 230)
         ])
         
         // Save Button
@@ -330,14 +312,16 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
         timeTextField.text = ""
         levelSegmented.selectedSegmentIndex = 0
         recipeImageView.image = nil
-        
+
         ingredientsTextView.text = "Nguyên liệu..."
         ingredientsTextView.textColor = .placeholderText
-        
+
         instructionsTextView.text = "Hướng dẫn..."
         instructionsTextView.textColor = .placeholderText
+
+        // Gửi thông báo để MyRecipesViewController reload data
+        NotificationCenter.default.post(name: NSNotification.Name("DidAddNewRecipe"), object: nil)
     }
-    
     
     // MARK: - Placeholder logic cho UITextView
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -349,8 +333,7 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
-            if textView == descriptionTextView { textView.text = "Mô tả..." }
-            else if textView == ingredientsTextView { textView.text = "Nguyên liệu..." }
+            if textView == ingredientsTextView { textView.text = "Nguyên liệu..." }
             else if textView == instructionsTextView { textView.text = "Hướng dẫn..." }
             textView.textColor = .placeholderText
         }
