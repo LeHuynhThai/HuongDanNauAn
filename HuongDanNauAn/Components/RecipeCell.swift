@@ -54,11 +54,11 @@ class RecipeCell: UICollectionViewCell {
     // Gán dữ liệu recipe vào cell và set màu badge theo độ khó
     func configure(with recipe: Recipe) {
         
-        // Gán tên món và thời gian nấu
+        // Gán tên món và thời gian nấu (GIỮ NGUYÊN)
         RecipeName.text = recipe.name
         RecipeTime.text = "\(recipe.cookTime ?? 0) phút"
         
-        // Set màu badge theo độ khó
+        // Set màu badge theo độ khó (GIỮ NGUYÊN)
         switch recipe.difficulty {
         case .easy:
             RecipeDifficulty.text = "DỄ"
@@ -71,11 +71,32 @@ class RecipeCell: UICollectionViewCell {
             RecipeDifficulty.backgroundColor = .systemRed
         }
         
-        // Load hình ảnh
-        if let imageURL = recipe.imageURL {
-            RecipeImageView.image = UIImage(named: imageURL)
-        } else {
-            RecipeImageView.image = UIImage(named: "chef")
+        // --- BẮT ĐẦU PHẦN SỬA LỖI TẢI ẢNH TỪ LOCAL ---
+        
+        if let imageName = recipe.imageURL, !imageName.isEmpty {
+            
+            let fileManager = FileManager.default
+            let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            
+            // Giả sử ảnh được lưu trực tiếp trong thư mục Documents
+            let imagePath = documentsURL.appendingPathComponent(imageName).path
+            
+            // 1. Kiểm tra ảnh trong thư mục Documents
+            if fileManager.fileExists(atPath: imagePath) {
+                if let image = UIImage(contentsOfFile: imagePath) {
+                    RecipeImageView.image = image
+                    return // Đã tìm thấy, kết thúc hàm
+                }
+            }
+            
+            // 2. Nếu không tìm thấy trong Documents, tìm trong Assets
+            if let assetImage = UIImage(named: imageName) {
+                RecipeImageView.image = assetImage
+                return // Đã tìm thấy, kết thúc hàm
+            }
         }
+        
+        // 3. Nếu không tìm thấy ở đâu, dùng ảnh mặc định
+        RecipeImageView.image = UIImage(named: "chef")
     }
 }

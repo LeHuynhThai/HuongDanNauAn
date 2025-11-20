@@ -172,13 +172,17 @@ extension FavoriteRecipesViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+        // 1. Lấy recipe tương ứng với dòng đã chọn
         let recipe = favoriteRecipes[indexPath.row]
-        print("Đã chọn: \(recipe.name)")
         
-        // TODO: Navigate sang màn hình chi tiết recipe
-        // let detailVC = RecipeDetailViewController()
-        // detailVC.recipe = recipe
-        // navigationController?.pushViewController(detailVC, animated: true)
+        // 2. Khởi tạo màn hình chi tiết (RecipeDetailViewController)
+        let detailVC = RecipeDetailViewController()
+        
+        // 3. Truyền dữ liệu recipe sang màn hình chi tiết
+        detailVC.recipe = recipe
+        
+        // 4. Thực hiện chuyển màn hình (Push)
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     // MARK: - Empty State Logic

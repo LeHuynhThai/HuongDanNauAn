@@ -195,15 +195,17 @@ extension SearchWithIngridientsTableViewController: UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Bỏ chọn dòng
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         let selectedRecipe = filteredRecipes[indexPath.row]
         
-        // Hiển thị chi tiết món ăn
-        let ingredientsText = selectedRecipe.ingredients.joined(separator: "\n• ")
-        let message = "Nguyên liệu:\n• \(ingredientsText)\n\nThời gian: \(selectedRecipe.cookTime ?? 0) phút\nĐộ khó: \(selectedRecipe.difficulty.rawValue)"
+        // Chuyển sang màn hình Chi Tiết (RecipeDetailViewController)
+        let detailVC = RecipeDetailViewController()
+        detailVC.recipe = selectedRecipe
         
-        let alert = UIAlertController(title: selectedRecipe.name, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Đóng", style: .default))
-        present(alert, animated: true)
+        // Push Navigation
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 

@@ -12,7 +12,6 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
         setupCollectionView()
-        // Thêm delegate cho searchBar để bắt sự kiện tìm kiếm
         searchBar.delegate = self
         loadRecipes()
     }
@@ -110,6 +109,24 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     // Số lượng item trong collection view = số lượng món ăn
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return recipes.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        collectionView.deselectItem(at: indexPath, animated: true)
+            
+            let selectedRecipe = recipes[indexPath.item]
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            // SỬ DỤNG STORYBOARD ID CHÍNH XÁC: "RecipeDetailViewController"
+            guard let detailVC = storyboard.instantiateViewController(withIdentifier: "RecipeDetailViewController") as? RecipeDetailViewController else {
+                print("Lỗi: Không thể khởi tạo RecipeDetailViewController. Kiểm tra Storyboard ID và tên class.")
+                return
+            }
+            
+            detailVC.recipe = selectedRecipe
+            navigationController?.pushViewController(detailVC, animated: true)
     }
     
     // Tạo và cấu hình cell cho từng món ăn
