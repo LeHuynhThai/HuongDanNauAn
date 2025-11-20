@@ -119,6 +119,10 @@ class MyRecipesViewController: UIViewController, UITableViewDataSource, UITableV
     func loadRecipes() {
         // Tạm thời userId = 1
         recipes = DatabaseManager.shared.getRecipesByUser(1)
+
+        // Sắp xếp theo tên công thức (A → Z)
+        recipes.sort { $0.name.lowercased() < $1.name.lowercased() }
+
         tableView.reloadData()
     }
 
@@ -149,5 +153,39 @@ class MyRecipesViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         // TODO: show recipe detail
+    }
+    
+    // MARK: - Swipe to Delete
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+
+        let deleteAction = UIContextualAction(style: .destructive, title: "Xóa") { [weak self] _, _, completionHandler in
+            guard let self = self else { return }
+
+            // Lấy recipe cần xoá
+            let recipe = self.recipes[indexPath.row]
+
+            // Xoá khỏi database
+            let success = DatabaseManager.shared.deleteRecipe(id: recipe.recipeId)
+
+            if success {
+                // Xoá khỏi mảng local
+                self.recipes.remove(at: indexPath.row)
+                // Xoá row khỏi tableView với animation
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            } else {
+                // Thông báo lỗi
+                let alert = UIAlertController(title: "Lỗi", message: "Không thể xoá công thức", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alert, animated: true)
+            }
+
+            completionHandler(true)
+        }
+
+        deleteAction.backgroundColor = .systemRed
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        configuration.performsFirstActionWithFullSwipe = true
+        return configuration
     }
 }
