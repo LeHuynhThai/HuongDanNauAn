@@ -3,6 +3,7 @@ import Foundation
 extension DatabaseManager {
     func seedUsers() {
         let sampleUsers: [(name: String, email: String, password: String, image: String?)] = [
+            ("Admin", "admin.com", "123456", nil),
             ("Nguyễn Văn An", "nguyenvanan@gmail.com", "123456", nil),
             ("Trần Thị Bình", "tranthibinh@gmail.com", "123456", nil),
             ("Lê Hoàng Cường", "lehoangcuong@gmail.com", "123456", nil),
