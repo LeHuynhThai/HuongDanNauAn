@@ -1,6 +1,6 @@
 import UIKit
 
-class FavoriteRecipesViewController: UIViewController {
+class FavoriteRecipesViewController: UIViewController, FavoriteRecipeCellDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -46,6 +46,42 @@ class FavoriteRecipesViewController: UIViewController {
         
         tableView.reloadData()
         print("Đã load \(favoriteRecipes.count) favorite recipes")
+    }
+    
+    // Xử lý khi nhấn nút trái tim
+    func didTapFavoriteButton(cell: FavoriteRecipeCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        
+        let recipe = favoriteRecipes[indexPath.row]
+        
+        // Hiển thị alert xác nhận
+        let alert = UIAlertController(
+            title: "Xóa khỏi yêu thích",
+            message: "Bạn có chắc muốn xóa \"\(recipe.name)\" khỏi danh sách yêu thích?",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Hủy", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Xóa", style: .destructive) { _ in
+            self.removeFavorite(at: indexPath)
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func removeFavorite(at indexPath: IndexPath) {
+        let recipe = favoriteRecipes[indexPath.row]
+        
+        let success = DatabaseManager.shared.removeFavoriteRecipe(
+            userId: currentUserId,
+            recipeId: recipe.recipeId
+        )
+        
+        if success {
+            favoriteRecipes.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            print("Đã xóa \(recipe.name) khỏi favorite")
+        }
     }
     
     func setupNavigationBar() {
@@ -97,7 +133,7 @@ extension FavoriteRecipesViewController: UITableViewDelegate, UITableViewDataSou
         // Gán dữ liệu vào cell
         cell.RecipeName.text = recipe.name
         cell.RecipeTime.text = "\(recipe.cookTime ?? 0) phút"
-        cell.RecipyDifficulty.text = recipe.difficulty.rawValue.capitalized
+        cell.RecipyDifficulty.text = recipe.difficulty.rawValue.uppercased()
         
         // Load hình ảnh
         if let imageURL = recipe.imageURL {
@@ -109,7 +145,7 @@ extension FavoriteRecipesViewController: UITableViewDelegate, UITableViewDataSou
         // Bo góc cho hình ảnh
         cell.RecipeImage.layer.cornerRadius = 8
         cell.RecipeImage.clipsToBounds = true
-        
+        cell.delegate = self
         return cell
     }
     
@@ -129,26 +165,5 @@ extension FavoriteRecipesViewController: UITableViewDelegate, UITableViewDataSou
         // let detailVC = RecipeDetailViewController()
         // detailVC.recipe = recipe
         // navigationController?.pushViewController(detailVC, animated: true)
-    }
-    
-    // Swipe sang trái để xóa khỏi favorite
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let recipe = favoriteRecipes[indexPath.row]
-            
-            // Xóa khỏi database
-            let success = DatabaseManager.shared.removeFavoriteRecipe(
-                userId: currentUserId,
-                recipeId: recipe.recipeId
-            )
-            
-            if success {
-                // Xóa khỏi mảng
-                favoriteRecipes.remove(at: indexPath.row)
-                // Xóa row khỏi tableView
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                print("Đã xóa \(recipe.name) khỏi favorite")
-            }
-        }
     }
 }

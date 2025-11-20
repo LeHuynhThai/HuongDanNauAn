@@ -7,9 +7,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        DatabaseManager.shared.seedUsers()
-        DatabaseManager.shared.seedRecipes()
-        DatabaseManager.shared.seedFavorites()
+//        DatabaseManager.shared.seedUsers()
+//        DatabaseManager.shared.seedRecipes()
+          DatabaseManager.shared.seedFavorites()
         return true
     }
 

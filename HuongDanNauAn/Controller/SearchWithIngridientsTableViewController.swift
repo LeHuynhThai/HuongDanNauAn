@@ -10,7 +10,6 @@ class SearchWithIngridientsTableViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet weak var SearchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var emptyStateLabel: UILabel! // Hiển thị khi không có kết quả
     
     // MARK: - Properties
     var filteredRecipes: [Recipe] = []   // Mảng lưu kết quả tìm kiếm
@@ -147,10 +146,11 @@ class SearchWithIngridientsTableViewController: UIViewController {
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 120
-        tableView.estimatedRowHeight = 120
+        tableView.rowHeight = 110
+        tableView.estimatedRowHeight = 110
         tableView.separatorStyle = .none
         tableView.backgroundColor = .systemGroupedBackground
+        tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0) // Padding trên dưới
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .onDrag
     }
