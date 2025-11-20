@@ -36,7 +36,6 @@ class DatabaseManager {
     let favoriteRecipeId = Expression<Int64>("recipe_id")
     let favoriteCreatedAt = Expression<Date>("created_at")
 
-    // MARK: - Init
     private init() {
         do {
             // Lấy Documents folder của app
@@ -51,7 +50,6 @@ class DatabaseManager {
             print("Không tạo được database: \(error)")
         }
     }
-
     // MARK: - Create Tables
     func createTables() {
         do {
