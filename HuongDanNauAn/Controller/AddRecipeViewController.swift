@@ -330,14 +330,16 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
         timeTextField.text = ""
         levelSegmented.selectedSegmentIndex = 0
         recipeImageView.image = nil
-        
+
         ingredientsTextView.text = "Nguyên liệu..."
         ingredientsTextView.textColor = .placeholderText
-        
+
         instructionsTextView.text = "Hướng dẫn..."
         instructionsTextView.textColor = .placeholderText
+
+        // Gửi thông báo để MyRecipesViewController reload data
+        NotificationCenter.default.post(name: NSNotification.Name("DidAddNewRecipe"), object: nil)
     }
-    
     
     // MARK: - Placeholder logic cho UITextView
     func textViewDidBeginEditing(_ textView: UITextView) {
