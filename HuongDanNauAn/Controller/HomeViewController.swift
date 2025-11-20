@@ -149,6 +149,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         } else {
             cell.RecipeImageView.image = UIImage(named: "pho_bo") // Hình mặc định
         }
+
         return cell
     }
     
