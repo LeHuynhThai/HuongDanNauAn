@@ -39,12 +39,13 @@ class DatabaseManager {
     // MARK: - Init
     private init() {
         do {
-            let projectPath = "/Users/admin/Desktop/HuongDanNauAn"
-            let fileUrl = URL(fileURLWithPath: projectPath).appendingPathComponent("AppDatabase.sqlite3")
+            // Lấy Documents folder của app
+            let documentsFolder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileUrl = documentsFolder.appendingPathComponent("AppDatabase.sqlite3")
             
             db = try Connection(fileUrl.path)
             createTables()
-
+            
             print("Database lưu ở: \(fileUrl.path)")
         } catch {
             print("Không tạo được database: \(error)")
