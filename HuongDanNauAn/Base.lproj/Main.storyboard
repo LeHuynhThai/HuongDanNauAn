@@ -519,9 +519,17 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AMr-Ax-oEX">
+                                                    <rect key="frame" x="301" y="20" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="610-2m-zZT"/>
+                                                        <constraint firstAttribute="width" constant="40" id="7w0-Cs-8bm"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="i8V-tS-XhK" firstAttribute="top" secondItem="CRu-lM-8AT" secondAttribute="topMargin" constant="8" id="84N-Ck-MiA"/>
+                                                <constraint firstItem="AMr-Ax-oEX" firstAttribute="top" secondItem="CRu-lM-8AT" secondAttribute="top" constant="20" id="9cX-dL-KcE"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="i8V-tS-XhK" secondAttribute="trailing" constant="16" id="AkT-LF-u7k"/>
                                                 <constraint firstItem="aE1-g2-hdt" firstAttribute="leading" secondItem="6m5-Mr-hsW" secondAttribute="trailing" constant="8" id="Fzq-fi-fGK"/>
                                                 <constraint firstItem="6m5-Mr-hsW" firstAttribute="top" secondItem="i8V-tS-XhK" secondAttribute="bottom" constant="4" id="Hew-kf-B6s"/>
@@ -531,6 +539,7 @@
                                                 <constraint firstItem="aE1-g2-hdt" firstAttribute="top" secondItem="i8V-tS-XhK" secondAttribute="bottom" constant="4" id="fR6-0F-o4w"/>
                                                 <constraint firstItem="i8V-tS-XhK" firstAttribute="leading" secondItem="648-fv-3I4" secondAttribute="trailing" constant="16" id="gsR-mI-hK5"/>
                                                 <constraint firstItem="648-fv-3I4" firstAttribute="top" secondItem="CRu-lM-8AT" secondAttribute="top" constant="8" id="sEY-3X-PZP"/>
+                                                <constraint firstAttribute="trailing" secondItem="AMr-Ax-oEX" secondAttribute="trailing" constant="20" id="tl4-xs-4v8"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -538,6 +547,7 @@
                                             <outlet property="RecipeName" destination="i8V-tS-XhK" id="ZEU-Yl-X0g"/>
                                             <outlet property="RecipeTime" destination="6m5-Mr-hsW" id="eUg-7H-7YR"/>
                                             <outlet property="RecipyDifficulty" destination="aE1-g2-hdt" id="MPB-ZV-1pq"/>
+                                            <outlet property="favoriteButton" destination="AMr-Ax-oEX" id="U2T-Dx-BCM"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -569,7 +579,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uja-fC-rbb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1134" y="2151"/>
+            <point key="canvasLocation" x="1133.5877862595419" y="2150.7042253521126"/>
         </scene>
         <!--Edit Profile View Controller-->
         <scene sceneID="KbO-mR-fkD">

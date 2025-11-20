@@ -5,6 +5,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var CollectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
+    // Mảng chứa danh sách tất cả món ăn từ database
     var recipes: [Recipe] = []
     
     override func viewDidLoad() {
@@ -22,6 +23,7 @@ class HomeViewController: UIViewController {
         loadRecipes()
     }
     
+    // Setup layout và appearance cho CollectionView
     func setupCollectionView() {
         CollectionView.delegate = self
         CollectionView.dataSource = self
@@ -42,8 +44,9 @@ class HomeViewController: UIViewController {
         print("Đã load \(recipes.count) recipes")
     }
     
+    // Setup thanh navigation bar với logo, title
     func setupNavigationBar() {
-        // 1. Setup Logo và Title (Giữ nguyên code của bạn)
+        // 1. Setup Logo và Title
         let leftStackView = UIStackView()
         leftStackView.axis = .horizontal
         leftStackView.spacing = 8
@@ -104,44 +107,39 @@ class HomeViewController: UIViewController {
 // MARK: - UICollectionView Delegate & DataSource
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    // Số lượng item trong collection view = số lượng món ăn
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return recipes.count
     }
     
+    // Tạo và cấu hình cell cho từng món ăn
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        // Dequeue cell với identifier "cell"
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecipeCell
+        
+        // Lấy recipe tại vị trí indexPath
         let recipe = recipes[indexPath.row]
-
-        // Gán dữ liệu thật vào cell
-        cell.RecipeName.text = recipe.name
-        cell.RecipeTime.text = "\(recipe.cookTime ?? 0) phút"
-        cell.RecipeDifficulty.text = recipe.difficulty.rawValue.uppercased()
-
-        // Load hình ảnh từ Documents/recipe_images
-        if let imageName = recipe.imageURL {
-            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let imageURL = documentsURL.appendingPathComponent("recipe_images").appendingPathComponent(imageName)
-            if let image = UIImage(contentsOfFile: imageURL.path) {
-                cell.RecipeImageView.image = image
-            } else {
-                cell.RecipeImageView.image = UIImage(named: "pho_bo") // Hình mặc định
-            }
-        } else {
-            cell.RecipeImageView.image = UIImage(named: "pho_bo") // Hình mặc định
-        }
-
+        
+        // Gọi hàm configure để setup cell với dữ liệu recipe
+        cell.configure(with: recipe)
+        
         return cell
     }
     
+    // Tính toán kích thước cho từng cell
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let padding: CGFloat = 12
-        let spacing: CGFloat = 12
+        let padding: CGFloat = 12   // Padding 2 bên
+        let spacing: CGFloat = 12   // Khoảng cách giữa 2 cột
         let totalSpacing = padding * 2 + spacing
         
+        // Tính width: Chia đôi màn hình trừ đi spacing
         let width = (collectionView.frame.width - totalSpacing) / 2
-        let imageHeight = width
+        
+        // Tính height: Hình ảnh vuông + chiều cao cho text
+        let imageHeight = width     // Hình vuông (width = height)
         let textHeight: CGFloat = 44 + 24 + 20
         
         return CGSize(width: width, height: imageHeight + textHeight)
