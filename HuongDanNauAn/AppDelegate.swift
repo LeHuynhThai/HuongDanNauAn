@@ -1,10 +1,3 @@
-//
-//  AppDelegate.swift
-//  HuongDanNauAn
-//
-//  Created by admin on 31/10/2025.
-//
-
 import UIKit
 import CoreData
 
@@ -14,7 +7,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+//        DatabaseManager.shared.seedUsers()
+//        DatabaseManager.shared.seedRecipes()
+//        DatabaseManager.shared.seedFavorites()
         return true
     }
 
