@@ -111,20 +111,25 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! RecipeCell
         let recipe = recipes[indexPath.row]
-        
+
         // Gán dữ liệu thật vào cell
         cell.RecipeName.text = recipe.name
-        // Kiểm tra an toàn cho cookTime
         cell.RecipeTime.text = "\(recipe.cookTime ?? 0) phút"
-        // Hiển thị độ khó
         cell.RecipeDifficulty.text = recipe.difficulty.rawValue.uppercased()
-                
-        // Load hình ảnh
-        if let imageURL = recipe.imageURL {
-            cell.RecipeImageView.image = UIImage(named: imageURL)
+
+        // Load hình ảnh từ Documents/recipe_images
+        if let imageName = recipe.imageURL {
+            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let imageURL = documentsURL.appendingPathComponent("recipe_images").appendingPathComponent(imageName)
+            if let image = UIImage(contentsOfFile: imageURL.path) {
+                cell.RecipeImageView.image = image
+            } else {
+                cell.RecipeImageView.image = UIImage(named: "pho_bo") // Hình mặc định
+            }
         } else {
             cell.RecipeImageView.image = UIImage(named: "pho_bo") // Hình mặc định
         }
+
         return cell
     }
     
