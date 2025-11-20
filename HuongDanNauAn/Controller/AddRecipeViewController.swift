@@ -230,13 +230,35 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
     @objc func saveRecipe() {
         // Lấy dữ liệu từ các field
         let name = nameTextField.text ?? ""
-        _ = descriptionTextView.textColor == .placeholderText ? "" : descriptionTextView.text ?? ""
-        _ = Int(timeTextField.text ?? "0") ?? 0
-        _ = levelSegmented.selectedSegmentIndex
         let ingredients = ingredientsTextView.textColor == .placeholderText ? "" : ingredientsTextView.text ?? ""
         let instructions = instructionsTextView.textColor == .placeholderText ? "" : instructionsTextView.text ?? ""
-        _ = recipeImageView.image
+        let cookTime = Int(timeTextField.text ?? "0")
+        let difficulty: Recipe.Difficulty
+        switch levelSegmented.selectedSegmentIndex {
+        case 0: difficulty = .easy
+        case 1: difficulty = .medium
+        case 2: difficulty = .hard
+        default: difficulty = .medium
+        }
         
+        guard let image = recipeImageView.image else {
+            let alert = UIAlertController(title: "Thiếu ảnh",
+                                          message: "Vui lòng chọn một ảnh món ăn",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            return
+        }
+
+        guard let imageFileName = saveImageToDocuments(image) else {
+            let alert = UIAlertController(title: "Lỗi ảnh",
+                                          message: "Không thể lưu ảnh",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            return
+        }
+
         // Kiểm tra dữ liệu cơ bản
         if name.isEmpty || ingredients.isEmpty || instructions.isEmpty {
             let alert = UIAlertController(title: "Lỗi", message: "Vui lòng điền đầy đủ thông tin", preferredStyle: .alert)
@@ -244,9 +266,79 @@ class AddRecipeViewController: UIViewController, UIImagePickerControllerDelegate
             present(alert, animated: true)
             return
         }
-        
-        // TODO: Lưu vào database
-        print("Đã lưu công thức: \(name)")
+
+        // Tạm thời set userId = 1
+        let userId: Int64 = 1
+
+        // Thêm recipe vào database
+        let success = DatabaseManager.shared.addRecipe(
+            name: name,
+            ingredients: ingredients.components(separatedBy: "\n"),
+            instructions: instructions.components(separatedBy: "\n"),
+            userId: userId,
+            cookTime: cookTime,
+            difficulty: difficulty,
+            imageURL: imageFileName
+        )
+
+        if success {
+            print("Đã lưu công thức: \(name)")
+            resetForm()
+        } else {
+            let alert = UIAlertController(title: "Lỗi", message: "Không thể lưu công thức", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        }
+    }
+    
+    func saveImageToDocuments(_ image: UIImage) -> String? {
+        guard let data = image.jpegData(compressionQuality: 0.8) else { return nil }
+
+        // Tạo tên file
+        let filename = "recipe_\(UUID().uuidString).jpg"
+
+        // Thư mục Documents/recipe_images
+        let fileManager = FileManager.default
+        let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let imagesFolderURL = documentsURL.appendingPathComponent("recipe_images")
+
+        // Nếu thư mục chưa tồn tại thì tạo
+        if !fileManager.fileExists(atPath: imagesFolderURL.path) {
+            do {
+                try fileManager.createDirectory(at: imagesFolderURL, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print("Lỗi tạo thư mục recipe_images: \(error)")
+                return nil
+            }
+        }
+
+        // Đường dẫn file ảnh
+        let fileURL = imagesFolderURL.appendingPathComponent(filename)
+
+        do {
+            try data.write(to: fileURL)
+            return filename // lưu tên file vào database, khi load sẽ nối path với imagesFolderURL
+        } catch {
+            print("Lỗi lưu ảnh: \(error)")
+            return nil
+        }
+    }
+
+    
+    func resetForm() {
+        nameTextField.text = ""
+        timeTextField.text = ""
+        levelSegmented.selectedSegmentIndex = 0
+        recipeImageView.image = nil
+
+        ingredientsTextView.text = "Nguyên liệu..."
+        ingredientsTextView.textColor = .placeholderText
+
+        instructionsTextView.text = "Hướng dẫn..."
+        instructionsTextView.textColor = .placeholderText
+
+        // Gửi thông báo để MyRecipesViewController reload data
+        NotificationCenter.default.post(name: NSNotification.Name("DidAddNewRecipe"), object: nil)
     }
     
     // MARK: - Placeholder logic cho UITextView
