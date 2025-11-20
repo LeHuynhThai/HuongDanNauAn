@@ -1,0 +1,15 @@
+cat << EOF > .gitignore
+# Xcode build files and derived data
+build/
+DerivedData/
+
+# Xcode user settings and workspace data
+xcuserdata/
+*.xcworkspace
+*.xcuserdatad
+
+# macOS system files
+
+AppDatabase.sqlite3
+
+
