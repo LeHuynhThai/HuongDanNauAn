@@ -345,10 +345,6 @@ class RecipeDetailViewController: UIViewController {
     
     // MARK: - Navigation Bar
     func setupNavigationBar() {
-        // --- QUAN TRỌNG: Hiển thị nút Back ---
-        // Vì đây là trang chi tiết, người dùng cần quay lại.
-        // Dù bạn set hidesBackButton = true, tôi khuyên nên thêm nút back thủ công hoặc để mặc định.
-        // Dưới đây là code giữ Header giống Home nhưng thêm nút Back.
         
         navigationItem.hidesBackButton = true // Theo yêu cầu của bạn
         

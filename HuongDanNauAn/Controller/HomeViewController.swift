@@ -102,12 +102,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         // SỬ DỤNG STORYBOARD ID CHÍNH XÁC: "RecipeDetailViewController"
         guard let detailVC = storyboard.instantiateViewController(withIdentifier: "RecipeDetailViewController") as? RecipeDetailViewController else {
-            print("Lỗi: Không thể khởi tạo RecipeDetailViewController. Kiểm tra Storyboard ID và tên class.")
+            print("Lỗi: Kiểm tra Storyboard ID và tên class.")
             return
         }
         
         detailVC.recipeId = selectedRecipe.recipeId
-        navigationController?.pushViewController(detailVC, animated: true)
+        navigationController?.pushViewController(detailVC, animated: false)
     }
     
     // Tạo và cấu hình cell cho từng món ăn

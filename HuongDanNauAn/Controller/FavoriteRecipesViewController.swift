@@ -149,7 +149,6 @@ extension FavoriteRecipesViewController: UITableViewDelegate, UITableViewDataSou
         cell.RecipeTime.text = "\(recipe.cookTime ?? 0) phút"
         cell.RecipyDifficulty.text = recipe.difficulty.rawValue.uppercased()
         
-        // Load hình ảnh
         
         // Load hình ảnh từ Documents/recipe_images hoặc từ Assets
         if let imageName = recipe.imageURL, !imageName.isEmpty {
