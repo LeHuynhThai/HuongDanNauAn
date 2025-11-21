@@ -202,7 +202,7 @@ extension SearchWithIngridientsTableViewController: UITableViewDelegate, UITable
         
         // Chuyển sang màn hình Chi Tiết (RecipeDetailViewController)
         let detailVC = RecipeDetailViewController()
-        detailVC.recipe = selectedRecipe
+        detailVC.recipeId = selectedRecipe.recipeId
         
         // Push Navigation
         navigationController?.pushViewController(detailVC, animated: true)

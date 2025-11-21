@@ -172,14 +172,24 @@ extension MyRecipesViewController: UICollectionViewDelegate {
     
     // recipe detail
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
         // 1. Lấy Recipe được chọn
         let selectedRecipe = recipes[indexPath.item]
         
-        // 2. Khởi tạo màn hình chi tiết
-        let detailVC = RecipeDetailViewController()
+        // --- SỬ DỤNG STORYBOARD ĐỂ KHỞI TẠO VÀ TRUYỀN ID ---
         
-        // 3. Truyền dữ liệu
-        detailVC.recipe = selectedRecipe
+        // Khởi tạo Storyboard (Giả sử màn hình chi tiết nằm trong "Main.storyboard")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        // Khởi tạo RecipeDetailViewController bằng Storyboard ID
+        guard let detailVC = storyboard.instantiateViewController(withIdentifier: "RecipeDetailViewController") as? RecipeDetailViewController else {
+            print("Lỗi: Vui lòng kiểm tra Storyboard ID.")
+            return
+        }
+        
+        // 3. TRUYỀN DỮ LIỆU: Truyền ID của công thức
+        detailVC.recipeId = selectedRecipe.recipeId
         
         // 4. Chuyển màn hình (Push Navigation)
         navigationController?.pushViewController(detailVC, animated: true)

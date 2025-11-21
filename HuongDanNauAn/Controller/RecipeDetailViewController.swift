@@ -1,10 +1,14 @@
 import UIKit
 
 class RecipeDetailViewController: UIViewController {
-
+    
     // MARK: - Data Variable
+    var recipeId: Int64?
     var recipe: Recipe?
-
+    
+    // MARK: - Favorite State
+    private var isFavorite: Bool = false
+    
     // MARK: - UI Elements
     
     // 1. ScrollView để cuộn nội dung dài
@@ -30,6 +34,20 @@ class RecipeDetailViewController: UIViewController {
         iv.clipsToBounds = true
         iv.backgroundColor = .systemGray6
         return iv
+    }()
+    
+    // MARK: - Nút Favorite
+    private let favoriteButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .systemRed
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 22
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 2)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.2
+        return button
     }()
     
     // 4. Tên món ăn
@@ -108,15 +126,37 @@ class RecipeDetailViewController: UIViewController {
         label.numberOfLines = 0 // Tự động dãn dòng
         return label
     }()
-
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        
         setupNavigationBar()
         setupUI()
-        displayData()
+        loadAndDisplayData()
+        checkFavoriteStatus()
+    }
+    
+    // MARK: - Data Loading and Display
+    func loadAndDisplayData() {
+        // 1. Kiểm tra ID được truyền
+        guard let id = recipeId else {
+            return
+        }
+        
+        // Bắt đầu tải dữ liệu ở luồng nền (Nên sử dụng DispatchQueue.global cho tác vụ DB)
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            
+            // 2. Tải dữ liệu từ Database
+            let fetchedRecipe = DatabaseManager.shared.getRecipeById(id)
+            
+            // 3. Cập nhật UI trên luồng chính
+            DispatchQueue.main.async {
+                self.recipe = fetchedRecipe
+                self.displayData()
+            }
+        }
     }
     
     // MARK: - Setup UI Layout
@@ -142,6 +182,7 @@ class RecipeDetailViewController: UIViewController {
         
         // Thêm các thành phần vào ContentView
         contentView.addSubview(recipeImageView)
+        contentView.addSubview(favoriteButton)
         contentView.addSubview(nameLabel)
         contentView.addSubview(metaStackView)
         contentView.addSubview(ingredientsHeaderLabel)
@@ -152,6 +193,8 @@ class RecipeDetailViewController: UIViewController {
         // Thêm con vào StackView
         metaStackView.addArrangedSubview(timeLabel)
         metaStackView.addArrangedSubview(difficultyBadge)
+        // Thêm action cho nút favorite
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
         
         // --- Constraints chi tiết ---
         let padding: CGFloat = 16
@@ -162,6 +205,12 @@ class RecipeDetailViewController: UIViewController {
             recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             recipeImageView.heightAnchor.constraint(equalToConstant: 250),
+            
+            // Nút Favorite (góc dưới phải của ảnh)
+            favoriteButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -16),
+            favoriteButton.bottomAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: -16),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 44),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 44),
             
             // 2. Tên món
             nameLabel.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: padding),
@@ -342,5 +391,86 @@ class RecipeDetailViewController: UIViewController {
     
     @objc func backButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+    // MARK: - Check Favorite Status
+    func checkFavoriteStatus() {
+        guard let userId = Session.currentUserId, let recipeId = recipeId else {
+            updateFavoriteButton(isFavorite: false)
+            return
+        }
+        
+        isFavorite = DatabaseManager.shared.isFavoriteExist(userId: userId, recipeId: recipeId)
+        updateFavoriteButton(isFavorite: isFavorite)
+    }
+
+    // MARK: - Update Favorite Button
+    func updateFavoriteButton(isFavorite: Bool) {
+        let iconName = isFavorite ? "heart.fill" : "heart"
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
+        favoriteButton.setImage(UIImage(systemName: iconName, withConfiguration: config), for: .normal)
+    }
+
+    // MARK: - Favorite Button Action
+    @objc func favoriteButtonTapped() {
+        guard let userId = Session.currentUserId, let recipeId = recipeId else {
+            showAlert(title: "Lỗi", message: "Không thể thực hiện thao tác này")
+            return
+        }
+        
+        if isFavorite {
+            // Xóa khỏi yêu thích
+            let success = DatabaseManager.shared.removeFavoriteRecipe(userId: userId, recipeId: recipeId)
+            if success {
+                isFavorite = false
+                updateFavoriteButton(isFavorite: false)
+                showToast(message: "Đã xóa khỏi yêu thích")
+            }
+        } else {
+            // Thêm vào yêu thích
+            let success = DatabaseManager.shared.addFavoriteRecipe(userId: userId, recipeId: recipeId)
+            if success {
+                isFavorite = true
+                updateFavoriteButton(isFavorite: true)
+                showToast(message: "Đã thêm vào yêu thích")
+            }
+        }
+    }
+
+    // MARK: - Show Toast
+    func showToast(message: String) {
+        let toastLabel = UILabel()
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        toastLabel.textColor = .white
+        toastLabel.textAlignment = .center
+        toastLabel.font = UIFont.systemFont(ofSize: 14)
+        toastLabel.text = message
+        toastLabel.alpha = 0.0
+        toastLabel.layer.cornerRadius = 10
+        toastLabel.clipsToBounds = true
+        
+        let textSize = message.size(withAttributes: [.font: toastLabel.font!])
+        toastLabel.frame = CGRect(x: (view.frame.width - textSize.width - 40) / 2,
+                                  y: view.frame.height - 150,
+                                  width: textSize.width + 40,
+                                  height: 35)
+        
+        view.addSubview(toastLabel)
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            toastLabel.alpha = 1.0
+        }) { _ in
+            UIView.animate(withDuration: 0.3, delay: 1.5, options: .curveEaseOut, animations: {
+                toastLabel.alpha = 0.0
+            }) { _ in
+                toastLabel.removeFromSuperview()
+            }
+        }
+    }
+
+    // MARK: - Show Alert
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }

@@ -72,11 +72,33 @@ class RecipeTableCell: UITableViewCell {
         RecipeTime.text = "⏱ \(recipe.cookTime ?? 0) phút"
         recipeDifficulty.text = recipe.difficulty.rawValue.uppercased()
         
-        // Nếu recipe có ảnh local hoặc URL
-        if let imageName = recipe.imageURL {
-            RecipeImage.image = UIImage(named: imageName)
-        } else {
-            RecipeImage.image = UIImage(named: "pho_bo") // placeholder
+        // Bat dau tai anh
+        
+        if let imageName = recipe.imageURL, !imageName.isEmpty {
+            
+            let fileManager = FileManager.default
+            let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            
+            // Thêm thư mục con "recipe_images" vào đường dẫn
+            let imagesFolderURL = documentsURL.appendingPathComponent("recipe_images")
+            let imagePath = imagesFolderURL.appendingPathComponent(imageName).path
+            
+            // 1. Kiểm tra ảnh trong thư mục Documents/recipe_images (Ảnh do người dùng thêm)
+            if fileManager.fileExists(atPath: imagePath) {
+                if let image = UIImage(contentsOfFile: imagePath) {
+                    RecipeImage.image = image
+                    return // Đã tìm thấy, kết thúc hàm
+                }
+            }
+            
+            // 2. Nếu không tìm thấy, kiểm tra trong Assets (Ảnh mặc định/Demo)
+            if let assetImage = UIImage(named: imageName) {
+                RecipeImage.image = assetImage
+                return // Đã tìm thấy, kết thúc hàm
+            }
         }
+        
+        // 3. Nếu không tìm thấy ở đâu, dùng ảnh placeholder cuối cùng
+        RecipeImage.image = UIImage(named: "pho_bo")
     }
 }

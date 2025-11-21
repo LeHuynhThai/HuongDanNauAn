@@ -150,12 +150,38 @@ extension FavoriteRecipesViewController: UITableViewDelegate, UITableViewDataSou
         cell.RecipyDifficulty.text = recipe.difficulty.rawValue.uppercased()
         
         // Load hình ảnh
-        if let imageURL = recipe.imageURL {
-            cell.RecipeImage.image = UIImage(named: imageURL)
-        } else {
-            cell.RecipeImage.image = UIImage(named: "chef")
-        }
         
+        // Load hình ảnh từ Documents/recipe_images hoặc từ Assets
+        if let imageName = recipe.imageURL, !imageName.isEmpty {
+            
+            let fileManager = FileManager.default
+            let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            
+            // [ĐIỂM SỬA CHỮA]: Thêm thư mục con "recipe_images" vào đường dẫn
+            let imagesFolderURL = documentsURL.appendingPathComponent("recipe_images")
+            let imagePath = imagesFolderURL.appendingPathComponent(imageName).path
+            
+            // 1. Kiểm tra ảnh trong thư mục Documents/recipe_images (Ảnh do người dùng thêm)
+            if fileManager.fileExists(atPath: imagePath) {
+                if let image = UIImage(contentsOfFile: imagePath) {
+                    cell.RecipeImage.image = image
+                } else {
+                    // Nếu file tồn tại nhưng không load được, dùng placeholder
+                    cell.RecipeImage.image = UIImage(named: "pho_bo")
+                }
+            }
+            // 2. Nếu không tìm thấy trong thư mục con, kiểm tra trong Assets (Ảnh mặc định/Demo)
+            else if let assetImage = UIImage(named: imageName) {
+                cell.RecipeImage.image = assetImage
+            } else {
+                // 3. Nếu không tìm thấy ở đâu, dùng ảnh placeholder cuối cùng
+                cell.RecipeImage.image = UIImage(named: "pho_bo")
+            }
+        } else {
+            // 4. Nếu không có imageURL, dùng ảnh placeholder
+            cell.RecipeImage.image = UIImage(named: "pho_bo")
+        }
+            
         // Bo góc cho hình ảnh
         cell.RecipeImage.layer.cornerRadius = 8
         cell.RecipeImage.clipsToBounds = true
@@ -173,13 +199,18 @@ extension FavoriteRecipesViewController: UITableViewDelegate, UITableViewDataSou
         tableView.deselectRow(at: indexPath, animated: true)
         
         // 1. Lấy recipe tương ứng với dòng đã chọn
-        let recipe = favoriteRecipes[indexPath.row]
+        let selectedRecipe = favoriteRecipes[indexPath.row]
         
-        // 2. Khởi tạo màn hình chi tiết (RecipeDetailViewController)
-        let detailVC = RecipeDetailViewController()
+        // 2. Khởi tạo màn hình chi tiết (RecipeDetailViewController) từ Storyboard
+        let storyboard = UIStoryboard(name: "Main", bundle: nil) // Giả sử Storyboard là "Main"
         
-        // 3. Truyền dữ liệu recipe sang màn hình chi tiết
-        detailVC.recipe = recipe
+        guard let detailVC = storyboard.instantiateViewController(withIdentifier: "RecipeDetailViewController") as? RecipeDetailViewController else {
+            print("Lỗi: Kiểm tra Storyboard ID và tên class.")
+            return
+        }
+        
+        // 3. TRUYỀN DỮ LIỆU: Chỉ truyền ID của công thức
+        detailVC.recipeId = selectedRecipe.recipeId
         
         // 4. Thực hiện chuyển màn hình (Push)
         navigationController?.pushViewController(detailVC, animated: true)
