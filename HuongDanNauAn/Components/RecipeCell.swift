@@ -71,17 +71,18 @@ class RecipeCell: UICollectionViewCell {
             RecipeDifficulty.backgroundColor = .systemRed
         }
         
-        // --- BẮT ĐẦU PHẦN SỬA LỖI TẢI ẢNH TỪ LOCAL ---
+        // TẢI ẢNH TỪ LOCAL
         
         if let imageName = recipe.imageURL, !imageName.isEmpty {
             
             let fileManager = FileManager.default
             let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
             
-            // Giả sử ảnh được lưu trực tiếp trong thư mục Documents
-            let imagePath = documentsURL.appendingPathComponent(imageName).path
+            // Thêm thư mục con "recipe_images" vào đường dẫn
+            let imagesFolderURL = documentsURL.appendingPathComponent("recipe_images")
+            let imagePath = imagesFolderURL.appendingPathComponent(imageName).path
             
-            // 1. Kiểm tra ảnh trong thư mục Documents
+            // 1. Kiểm tra ảnh trong thư mục Documents/recipe_images
             if fileManager.fileExists(atPath: imagePath) {
                 if let image = UIImage(contentsOfFile: imagePath) {
                     RecipeImageView.image = image
@@ -89,14 +90,14 @@ class RecipeCell: UICollectionViewCell {
                 }
             }
             
-            // 2. Nếu không tìm thấy trong Documents, tìm trong Assets
+            // 2. Nếu không tìm thấy trong thư mục con, kiểm tra trong Assets (Ảnh mặc định/Demo)
             if let assetImage = UIImage(named: imageName) {
                 RecipeImageView.image = assetImage
                 return // Đã tìm thấy, kết thúc hàm
             }
         }
         
-        // 3. Nếu không tìm thấy ở đâu, dùng ảnh mặc định
+        // 3. Nếu không tìm thấy ở đâu, dùng ảnh mặc định cuối cùng
         RecipeImageView.image = UIImage(named: "chef")
     }
 }

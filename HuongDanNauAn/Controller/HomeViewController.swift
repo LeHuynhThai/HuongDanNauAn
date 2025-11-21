@@ -70,25 +70,6 @@ class HomeViewController: UIViewController {
         
         let leftBarButton = UIBarButtonItem(customView: leftStackView)
         navigationItem.leftBarButtonItem = leftBarButton
-        
-        // 2. Setup Nút Profile (Lấy lại từ Main sang)
-        let profileButton = UIButton(type: .custom)
-        profileButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        profileButton.layer.cornerRadius = 20
-        profileButton.clipsToBounds = true
-        if let avatarImage = UIImage(named: "user_avatar") {
-            profileButton.setImage(avatarImage, for: .normal)
-            profileButton.imageView?.contentMode = .scaleAspectFill
-        } else {
-            profileButton.backgroundColor = .systemGray4 // Màu mặc định nếu không có ảnh
-        }
-        profileButton.layer.borderWidth = 0.5
-        profileButton.layer.borderColor = UIColor.systemGray5.cgColor
-        
-        // Thêm action cho nút Profile nếu cần
-        // profileButton.addTarget(self, action: #selector(didTapProfile), for: .touchUpInside)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton)
     }
     
     // Logic chuẩn bị chuyển màn hình Search
