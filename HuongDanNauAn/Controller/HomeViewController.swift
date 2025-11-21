@@ -91,13 +91,13 @@ class HomeViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton)
     }
     
-    // Logic chuẩn bị chuyển màn hình Search (Lấy từ Main sang nhưng chỉnh lại cho hợp lý)
+    // Logic chuẩn bị chuyển màn hình Search
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showSearchResults",
            let destination = segue.destination as? SearchResultViewController,
            let searchText = sender as? String {
-            // Truyền từ khóa tìm kiếm sang màn hình kết quả
-            // destination.searchKeyword = searchText
+            // Trim khoảng trắng trước khi truyền
+            destination.searchKeyword = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
             print("Đang tìm kiếm: \(searchText)")
         }
     }

@@ -254,6 +254,45 @@ extension DatabaseManager {
         return recipesList
     }
     
+    // MARK: - Search Recipes by Name
+        func searchRecipesByName(_ keyword: String) -> [Recipe] {
+            var recipesList: [Recipe] = []
+
+            guard !keyword.isEmpty else {
+                return getAllRecipes() // nếu rỗng, trả về tất cả
+            }
+
+            do {
+                for row in try db!.prepare(recipes) {
+                    let name = row[recipeName]
+
+                    // Kiểm tra xem tên recipe có chứa từ khóa tìm kiếm không (không phân biệt hoa thường)
+                    if name.localizedCaseInsensitiveContains(keyword) {
+                        let ingredients = decodeStringArray(row[recipeIngredients])
+                        let instructions = decodeStringArray(row[recipeInstructions])
+                        let difficulty = Recipe.Difficulty(rawValue: row[recipeDifficulty]) ?? .medium
+
+                        let recipeObj = Recipe(
+                            recipeId: row[recipeId],
+                            userId: row[recipeUserId],
+                            name: name,
+                            ingredients: ingredients,
+                            instructions: instructions,
+                            createdAt: row[recipeCreatedAt],
+                            cookTime: row[recipeCookTime],
+                            difficulty: difficulty,
+                            imageURL: row[recipeImageURL]
+                        )
+                        recipesList.append(recipeObj)
+                    }
+                }
+            } catch {
+                print("Lỗi tìm kiếm recipe theo tên: \(error)")
+            }
+
+            return recipesList
+        }
+    
     // MARK: - Database Path
     func getDatabasePath() -> String? {
         do {
