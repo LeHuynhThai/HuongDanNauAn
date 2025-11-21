@@ -11,22 +11,44 @@ class RecipeDetailViewController: UIViewController {
     
     // MARK: - UI Elements
     
-    // 1. ScrollView để cuộn nội dung dài
+    // 1. Loading Indicator
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        indicator.color = .systemGray
+        return indicator
+    }()
+    
+    // 2. Label thông báo loading
+    private let loadingLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Đang hiển thị dữ liệu..."
+        label.textColor = .secondaryLabel
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    // 3. ScrollView (Chứa nội dung chính)
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.backgroundColor = .systemBackground
+        sv.alpha = 0 // MẶC ĐỊNH ẨN ĐỂ CHỜ DỮ LIỆU
         return sv
     }()
     
-    // 2. Container View nằm trong ScrollView
+    // 4. Container View
     private let contentView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    // 3. Ảnh món ăn
+    // --- CÁC THÀNH PHẦN CHI TIẾT ---
+    
     private let recipeImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +58,6 @@ class RecipeDetailViewController: UIViewController {
         return iv
     }()
     
-    // MARK: - Nút Favorite
     private let favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -50,17 +71,15 @@ class RecipeDetailViewController: UIViewController {
         return button
     }()
     
-    // 4. Tên món ăn
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = .label
-        label.numberOfLines = 0 // Cho phép xuống dòng
+        label.numberOfLines = 0
         return label
     }()
     
-    // 5. StackView chứa Thời gian & Độ khó
     private let metaStackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +89,6 @@ class RecipeDetailViewController: UIViewController {
         return stack
     }()
     
-    // Label thời gian
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
@@ -78,7 +96,6 @@ class RecipeDetailViewController: UIViewController {
         return label
     }()
     
-    // Badge độ khó
     private let difficultyBadge: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
@@ -89,7 +106,7 @@ class RecipeDetailViewController: UIViewController {
         return label
     }()
     
-    // 6. Phần Nguyên liệu
+    // Header Nguyên liệu
     private let ingredientsHeaderLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -99,16 +116,17 @@ class RecipeDetailViewController: UIViewController {
         return label
     }()
     
+    // Nội dung Nguyên liệu
     private let ingredientsContentLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = .label
-        label.numberOfLines = 0 // Tự động dãn dòng
+        label.numberOfLines = 0
         return label
     }()
     
-    // 7. Phần Cách làm
+    // Header Cách làm
     private let instructionsHeaderLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -118,12 +136,13 @@ class RecipeDetailViewController: UIViewController {
         return label
     }()
     
+    // Nội dung Cách làm
     private let instructionsContentLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = .label
-        label.numberOfLines = 0 // Tự động dãn dòng
+        label.numberOfLines = 0
         return label
     }()
     
@@ -137,129 +156,57 @@ class RecipeDetailViewController: UIViewController {
         checkFavoriteStatus()
     }
     
-    // MARK: - Data Loading and Display
+    // MARK: - LOGIC QUAN TRỌNG: Load Data
     func loadAndDisplayData() {
-        // 1. Kiểm tra ID được truyền
+        
+        // 1. Luôn luôn hiển thị trạng thái Loading trước tiên
+        loadingIndicator.startAnimating()
+        loadingLabel.isHidden = false
+        scrollView.alpha = 0 // Ẩn toàn bộ nội dung
+        
+        // 2. Kiểm tra ID
         guard let id = recipeId else {
             return
         }
         
-        // Bắt đầu tải dữ liệu ở luồng nền (Nên sử dụng DispatchQueue.global cho tác vụ DB)
+        // 3. Nếu CÓ ID -> Bắt đầu tải dữ liệu
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             
-            // 2. Tải dữ liệu từ Database
             let fetchedRecipe = DatabaseManager.shared.getRecipeById(id)
             
-            // 3. Cập nhật UI trên luồng chính
+            // 4. Tải xong -> Cập nhật UI
             DispatchQueue.main.async {
                 self.recipe = fetchedRecipe
-                self.displayData()
+                
+                // Ẩn Loading
+                self.loadingIndicator.stopAnimating()
+                self.loadingLabel.isHidden = true
+                
+                if self.recipe != nil {
+                    // Đổ dữ liệu vào View
+                    self.displayData()
+                    
+                    // Hiện nội dung lên
+                    UIView.animate(withDuration: 0.3) {
+                        self.scrollView.alpha = 1
+                    }
+                } else {
+                    self.showAlert(title: "Lỗi", message: "Không tìm thấy thông tin món ăn")
+                }
             }
         }
     }
     
-    // MARK: - Setup UI Layout
-    func setupUI() {
-        // Thêm ScrollView vào View chính
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        
-        // Constraints cho ScrollView (Full màn hình)
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            // Content View phải bám sát ScrollView
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor) // Quan trọng: Chặn cuộn ngang
-        ])
-        
-        // Thêm các thành phần vào ContentView
-        contentView.addSubview(recipeImageView)
-        contentView.addSubview(favoriteButton)
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(metaStackView)
-        contentView.addSubview(ingredientsHeaderLabel)
-        contentView.addSubview(ingredientsContentLabel)
-        contentView.addSubview(instructionsHeaderLabel)
-        contentView.addSubview(instructionsContentLabel)
-        
-        // Thêm con vào StackView
-        metaStackView.addArrangedSubview(timeLabel)
-        metaStackView.addArrangedSubview(difficultyBadge)
-        // Thêm action cho nút favorite
-        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
-        
-        // --- Constraints chi tiết ---
-        let padding: CGFloat = 16
-        
-        NSLayoutConstraint.activate([
-            // 1. Ảnh Header (Cao 250pt)
-            recipeImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            recipeImageView.heightAnchor.constraint(equalToConstant: 250),
-            
-            // Nút Favorite (góc dưới phải của ảnh)
-            favoriteButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -16),
-            favoriteButton.bottomAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: -16),
-            favoriteButton.widthAnchor.constraint(equalToConstant: 44),
-            favoriteButton.heightAnchor.constraint(equalToConstant: 44),
-            
-            // 2. Tên món
-            nameLabel.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: padding),
-            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            
-            // 3. Stack (Thời gian + Độ khó)
-            metaStackView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            metaStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            
-            // Kích thước badge độ khó
-            difficultyBadge.widthAnchor.constraint(greaterThanOrEqualToConstant: 60),
-            difficultyBadge.heightAnchor.constraint(equalToConstant: 24),
-            
-            // 4. Header Nguyên liệu
-            ingredientsHeaderLabel.topAnchor.constraint(equalTo: metaStackView.bottomAnchor, constant: 24),
-            ingredientsHeaderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            ingredientsHeaderLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            
-            // 5. Nội dung Nguyên liệu
-            ingredientsContentLabel.topAnchor.constraint(equalTo: ingredientsHeaderLabel.bottomAnchor, constant: 8),
-            ingredientsContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            ingredientsContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            
-            // 6. Header Cách làm
-            instructionsHeaderLabel.topAnchor.constraint(equalTo: ingredientsContentLabel.bottomAnchor, constant: 24),
-            instructionsHeaderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            instructionsHeaderLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            
-            // 7. Nội dung Cách làm
-            instructionsContentLabel.topAnchor.constraint(equalTo: instructionsHeaderLabel.bottomAnchor, constant: 8),
-            instructionsContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
-            instructionsContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
-            
-            // QUAN TRỌNG: Constraint cuối cùng để ScrollView tính được độ cao nội dung
-            instructionsContentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
-        ])
-    }
-    
-    // MARK: - Display Data
+    // MARK: - Display Data to UI
     func displayData() {
         guard let recipe = recipe else { return }
         
-        // 1. Tên
+        // Tên
         nameLabel.text = recipe.name
         
-        // 2. Thời gian
+        // Thời gian
         if let time = recipe.cookTime {
-            // Tạo text có icon đồng hồ
             let attachment = NSTextAttachment()
             attachment.image = UIImage(systemName: "clock")?.withTintColor(.secondaryLabel)
             attachment.bounds = CGRect(x: 0, y: -2, width: 14, height: 14)
@@ -270,72 +217,155 @@ class RecipeDetailViewController: UIViewController {
             timeLabel.text = ""
         }
         
-        // 3. Độ khó
+        // Độ khó
         switch recipe.difficulty {
         case .easy:
-            difficultyBadge.text = "Dễ"
+            difficultyBadge.text = "  Dễ  "
             difficultyBadge.backgroundColor = .systemGreen
         case .medium:
-            difficultyBadge.text = "Trung bình"
+            difficultyBadge.text = "  Trung bình  "
             difficultyBadge.backgroundColor = .systemOrange
         case .hard:
-            difficultyBadge.text = "Khó"
+            difficultyBadge.text = "  Khó  "
             difficultyBadge.backgroundColor = .systemRed
+        default:
+            difficultyBadge.text = "  N/A  "
+            difficultyBadge.backgroundColor = .systemGray
         }
         
-        // 4. Xử lý Ảnh (Logic thông minh: Documents -> Assets)
+        // Ảnh
         if let imageName = recipe.imageURL, !imageName.isEmpty {
-            let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            let subFolderURL = documentsURL.appendingPathComponent("recipe_images").appendingPathComponent(imageName)
-            let directURL = documentsURL.appendingPathComponent(imageName)
+            let fileManager = FileManager.default
+            let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let imagesFolderURL = documentsURL.appendingPathComponent("recipe_images")
+            let imagePath = imagesFolderURL.appendingPathComponent(imageName).path
             
-            if let image = UIImage(contentsOfFile: subFolderURL.path) {
+            if fileManager.fileExists(atPath: imagePath), let image = UIImage(contentsOfFile: imagePath) {
                 recipeImageView.image = image
-            } else if let image = UIImage(contentsOfFile: directURL.path) {
-                recipeImageView.image = image
-            } else if let image = UIImage(named: imageName) {
-                recipeImageView.image = image
+            } else if let assetImage = UIImage(named: imageName) {
+                recipeImageView.image = assetImage
             } else {
-                recipeImageView.image = UIImage(systemName: "photo")
-                recipeImageView.contentMode = .scaleAspectFit
-                recipeImageView.tintColor = .systemGray3
+                recipeImageView.image = UIImage(named: "pho_bo") ?? UIImage(systemName: "photo")
             }
         } else {
-            recipeImageView.image = UIImage(systemName: "photo")
-            recipeImageView.contentMode = .scaleAspectFit
-            recipeImageView.tintColor = .systemGray3
+            recipeImageView.image = UIImage(named: "pho_bo") ?? UIImage(systemName: "photo")
         }
         
-        // 5. Xử lý Nguyên liệu (Mảng -> Text gạch đầu dòng)
+        // Nguyên liệu
         if recipe.ingredients.isEmpty {
-            ingredientsContentLabel.text = "Chưa có thông tin nguyên liệu."
-            ingredientsContentLabel.textColor = .secondaryLabel
-            ingredientsContentLabel.font = UIFont.italicSystemFont(ofSize: 15)
+            ingredientsContentLabel.text = "Chưa có thông tin."
         } else {
-            let ingredientsText = recipe.ingredients.map { "• \($0)" }.joined(separator: "\n\n")
-            // Tăng khoảng cách dòng cho dễ đọc
-            ingredientsContentLabel.attributedText = createSpacedText(ingredientsText)
+            let text = recipe.ingredients.map { "• \($0)" }.joined(separator: "\n\n")
+            ingredientsContentLabel.attributedText = createSpacedText(text)
         }
         
-        // 6. Xử lý Cách làm (Mảng -> Text bước 1, 2...)
+        // Cách làm
         if recipe.instructions.isEmpty {
-            instructionsContentLabel.text = "Chưa có hướng dẫn cách làm."
-            instructionsContentLabel.textColor = .secondaryLabel
-            instructionsContentLabel.font = UIFont.italicSystemFont(ofSize: 15)
+            instructionsContentLabel.text = "Chưa có hướng dẫn."
         } else {
-            let instructionsText = recipe.instructions.enumerated().map { index, step in
-                return "Bước \(index + 1):\n\(step)"
-            }.joined(separator: "\n\n")
-            
-            instructionsContentLabel.attributedText = createSpacedText(instructionsText)
+            let text = recipe.instructions.enumerated().map { "Bước \($0 + 1):\n\($1)" }.joined(separator: "\n\n")
+            instructionsContentLabel.attributedText = createSpacedText(text)
         }
     }
     
-    // Helper: Tạo khoảng cách dòng (Line Height)
+    // MARK: - Setup UI Layout
+    func setupUI() {
+        // 1. Thêm các View chính
+        view.addSubview(scrollView)
+        view.addSubview(loadingIndicator)
+        view.addSubview(loadingLabel)
+        scrollView.addSubview(contentView)
+        
+        // 2. Constraints cho ScrollView & Loading
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
+            
+            loadingLabel.topAnchor.constraint(equalTo: loadingIndicator.bottomAnchor, constant: 12),
+            loadingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+        
+        // 3. Thêm nội dung vào ContentView
+        contentView.addSubview(recipeImageView)
+        contentView.addSubview(favoriteButton)
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(metaStackView)
+        contentView.addSubview(ingredientsHeaderLabel)
+        contentView.addSubview(ingredientsContentLabel)
+        contentView.addSubview(instructionsHeaderLabel)
+        contentView.addSubview(instructionsContentLabel)
+        
+        metaStackView.addArrangedSubview(timeLabel)
+        metaStackView.addArrangedSubview(difficultyBadge)
+        
+        favoriteButton.addTarget(self, action: #selector(favoriteButtonTapped), for: .touchUpInside)
+        
+        let padding: CGFloat = 16
+        
+        // 4. Constraints chi tiết cho nội dung
+        NSLayoutConstraint.activate([
+            // Ảnh
+            recipeImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            recipeImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            recipeImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            recipeImageView.heightAnchor.constraint(equalToConstant: 250),
+            
+            // Nút Favorite
+            favoriteButton.trailingAnchor.constraint(equalTo: recipeImageView.trailingAnchor, constant: -16),
+            favoriteButton.bottomAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: -16),
+            favoriteButton.widthAnchor.constraint(equalToConstant: 44),
+            favoriteButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            // Tên món
+            nameLabel.topAnchor.constraint(equalTo: recipeImageView.bottomAnchor, constant: padding),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            
+            // Meta Stack
+            metaStackView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            metaStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            difficultyBadge.heightAnchor.constraint(equalToConstant: 24),
+            
+            // Header Nguyên liệu
+            ingredientsHeaderLabel.topAnchor.constraint(equalTo: metaStackView.bottomAnchor, constant: 24),
+            ingredientsHeaderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            ingredientsHeaderLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            
+            // Nội dung Nguyên liệu
+            ingredientsContentLabel.topAnchor.constraint(equalTo: ingredientsHeaderLabel.bottomAnchor, constant: 8),
+            ingredientsContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            ingredientsContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            
+            // Header Cách làm
+            instructionsHeaderLabel.topAnchor.constraint(equalTo: ingredientsContentLabel.bottomAnchor, constant: 24),
+            instructionsHeaderLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            instructionsHeaderLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            
+            // Nội dung Cách làm
+            instructionsContentLabel.topAnchor.constraint(equalTo: instructionsHeaderLabel.bottomAnchor, constant: 8),
+            instructionsContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+            instructionsContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
+            
+            // CHỐT BOTTOM CONTENT VIEW
+            instructionsContentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
+        ])
+    }
+    
+    // Helper: Spaced Text
     private func createSpacedText(_ text: String) -> NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 6 // Khoảng cách giữa các dòng
-        
+        paragraphStyle.lineSpacing = 6
         return NSAttributedString(string: text, attributes: [
             .paragraphStyle: paragraphStyle,
             .font: UIFont.systemFont(ofSize: 16),
@@ -345,76 +375,52 @@ class RecipeDetailViewController: UIViewController {
     
     // MARK: - Navigation Bar
     func setupNavigationBar() {
-        
-        navigationItem.hidesBackButton = true // Theo yêu cầu của bạn
-        
+        navigationItem.hidesBackButton = true
         let leftStackView = UIStackView()
         leftStackView.axis = .horizontal
         leftStackView.spacing = 8
         leftStackView.alignment = .center
         
-        // Nút Back (Mũi tên)
-        let backButton = UIButton(type: .system)
-        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.tintColor = .label
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-        
-        // Logo
         let logoImageView = UIImageView(image: UIImage(named: "chef"))
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            logoImageView.widthAnchor.constraint(equalToConstant: 32),
-            logoImageView.heightAnchor.constraint(equalToConstant: 32)
-        ])
+        logoImageView.widthAnchor.constraint(equalToConstant: 32).isActive = true
+        logoImageView.heightAnchor.constraint(equalToConstant: 32).isActive = true
         
-        // Title
         let titleLabel = UILabel()
-        titleLabel.text = "Chi tiết" // Đổi title một chút cho hợp lý
+        titleLabel.text = "CookEase"
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         titleLabel.textColor = .label
         
-        leftStackView.addArrangedSubview(backButton) // Thêm nút back vào stack
         leftStackView.addArrangedSubview(logoImageView)
         leftStackView.addArrangedSubview(titleLabel)
         
-        // Tăng vùng hit test cho nút back bằng cách set spacing custom nếu cần
-        leftStackView.setCustomSpacing(16, after: backButton)
-
-        let leftBarButton = UIBarButtonItem(customView: leftStackView)
-        navigationItem.leftBarButtonItem = leftBarButton
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftStackView)
     }
     
-    @objc func backButtonTapped() {
-        navigationController?.popViewController(animated: true)
-    }
-    // MARK: - Check Favorite Status
+    // MARK: - Favorite Logic
     func checkFavoriteStatus() {
         guard let userId = Session.currentUserId, let recipeId = recipeId else {
             updateFavoriteButton(isFavorite: false)
             return
         }
-        
         isFavorite = DatabaseManager.shared.isFavoriteExist(userId: userId, recipeId: recipeId)
         updateFavoriteButton(isFavorite: isFavorite)
     }
-
-    // MARK: - Update Favorite Button
+    
     func updateFavoriteButton(isFavorite: Bool) {
         let iconName = isFavorite ? "heart.fill" : "heart"
         let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
         favoriteButton.setImage(UIImage(systemName: iconName, withConfiguration: config), for: .normal)
     }
-
-    // MARK: - Favorite Button Action
+    
     @objc func favoriteButtonTapped() {
         guard let userId = Session.currentUserId, let recipeId = recipeId else {
-            showAlert(title: "Lỗi", message: "Không thể thực hiện thao tác này")
+            showAlert(title: "Thông báo", message: "Vui lòng đăng nhập để sử dụng tính năng này")
             return
         }
         
         if isFavorite {
-            // Xóa khỏi yêu thích
             let success = DatabaseManager.shared.removeFavoriteRecipe(userId: userId, recipeId: recipeId)
             if success {
                 isFavorite = false
@@ -422,7 +428,6 @@ class RecipeDetailViewController: UIViewController {
                 showToast(message: "Đã xóa khỏi yêu thích")
             }
         } else {
-            // Thêm vào yêu thích
             let success = DatabaseManager.shared.addFavoriteRecipe(userId: userId, recipeId: recipeId)
             if success {
                 isFavorite = true
@@ -431,8 +436,8 @@ class RecipeDetailViewController: UIViewController {
             }
         }
     }
-
-    // MARK: - Show Toast
+    
+    // MARK: - Helpers
     func showToast(message: String) {
         let toastLabel = UILabel()
         toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.7)
@@ -449,7 +454,6 @@ class RecipeDetailViewController: UIViewController {
                                   y: view.frame.height - 150,
                                   width: textSize.width + 40,
                                   height: 35)
-        
         view.addSubview(toastLabel)
         
         UIView.animate(withDuration: 0.3, animations: {
@@ -462,8 +466,7 @@ class RecipeDetailViewController: UIViewController {
             }
         }
     }
-
-    // MARK: - Show Alert
+    
     func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
