@@ -114,19 +114,19 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         collectionView.deselectItem(at: indexPath, animated: true)
-            
-            let selectedRecipe = recipes[indexPath.item]
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            
-            // SỬ DỤNG STORYBOARD ID CHÍNH XÁC: "RecipeDetailViewController"
-            guard let detailVC = storyboard.instantiateViewController(withIdentifier: "RecipeDetailViewController") as? RecipeDetailViewController else {
-                print("Lỗi: Không thể khởi tạo RecipeDetailViewController. Kiểm tra Storyboard ID và tên class.")
-                return
-            }
-            
-            detailVC.recipe = selectedRecipe
-            navigationController?.pushViewController(detailVC, animated: true)
+        
+        let selectedRecipe = recipes[indexPath.item]
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        // SỬ DỤNG STORYBOARD ID CHÍNH XÁC: "RecipeDetailViewController"
+        guard let detailVC = storyboard.instantiateViewController(withIdentifier: "RecipeDetailViewController") as? RecipeDetailViewController else {
+            print("Lỗi: Không thể khởi tạo RecipeDetailViewController. Kiểm tra Storyboard ID và tên class.")
+            return
+        }
+        
+        detailVC.recipeId = selectedRecipe.recipeId
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     // Tạo và cấu hình cell cho từng món ăn

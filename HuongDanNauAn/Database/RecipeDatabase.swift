@@ -305,4 +305,45 @@ extension DatabaseManager {
             return nil
         }
     }
+
+    // MARK: - Get Recipe by ID
+    func getRecipeById(_ id: Int64) -> Recipe? {
+        // Đảm bảo kết nối database tồn tại
+        guard let db = db else { return nil }
+
+        do {
+            // 1. Tạo truy vấn: Lọc bảng recipes theo recipeId
+            let query = recipes.filter(recipeId == id).limit(1)
+
+            // 2. Thực thi truy vấn và lấy dòng đầu tiên (hoặc nil nếu không tìm thấy)
+            // 'pluck' là hàm tiện lợi trong SQLite.swift để lấy dòng đầu tiên
+            guard let row = try db.pluck(query) else {
+                print("Không tìm thấy Recipe với ID: \(id)")
+                return nil
+            }
+
+            // 3. Ánh xạ dữ liệu từ row sang object Recipe
+            let ingredients = decodeStringArray(row[self.recipeIngredients])
+            let instructions = decodeStringArray(row[self.recipeInstructions])
+            let difficulty = Recipe.Difficulty(rawValue: row[self.recipeDifficulty]) ?? .medium
+            
+            let recipeObj = Recipe(
+                recipeId: row[recipeId],
+                userId: row[recipeUserId],
+                name: row[recipeName],
+                ingredients: ingredients,
+                instructions: instructions,
+                createdAt: row[recipeCreatedAt],
+                cookTime: row[recipeCookTime],
+                difficulty: difficulty,
+                imageURL: row[recipeImageURL]
+            )
+            
+            return recipeObj
+
+        } catch {
+            print("Lỗi lấy Recipe theo ID \(id): \(error)")
+            return nil
+        }
+    }
 }

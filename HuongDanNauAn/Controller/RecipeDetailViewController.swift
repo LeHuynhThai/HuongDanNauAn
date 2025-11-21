@@ -1,10 +1,11 @@
 import UIKit
 
 class RecipeDetailViewController: UIViewController {
-
+    
     // MARK: - Data Variable
+    var recipeId: Int64?
     var recipe: Recipe?
-
+    
     // MARK: - UI Elements
     
     // 1. ScrollView để cuộn nội dung dài
@@ -108,7 +109,7 @@ class RecipeDetailViewController: UIViewController {
         label.numberOfLines = 0 // Tự động dãn dòng
         return label
     }()
-
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,7 +117,29 @@ class RecipeDetailViewController: UIViewController {
         
         setupNavigationBar()
         setupUI()
-        displayData()
+        loadAndDisplayData()
+    }
+    
+    // MARK: - Data Loading and Display
+    func loadAndDisplayData() {
+        // 1. Kiểm tra ID được truyền
+        guard let id = recipeId else {
+            return
+        }
+        
+        // Bắt đầu tải dữ liệu ở luồng nền (Nên sử dụng DispatchQueue.global cho tác vụ DB)
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            
+            // 2. Tải dữ liệu từ Database
+            let fetchedRecipe = DatabaseManager.shared.getRecipeById(id)
+            
+            // 3. Cập nhật UI trên luồng chính
+            DispatchQueue.main.async {
+                self.recipe = fetchedRecipe
+                self.displayData()
+            }
+        }
     }
     
     // MARK: - Setup UI Layout
